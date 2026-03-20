@@ -1,0 +1,298 @@
+.detailsWrap {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0;
+  max-width: 960px;
+  width: 100%;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--atena-secondary-400);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.title {
+  font-family: "Inter", var(--atena-font-inter);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--atena-neutral-800);
+}
+
+.actionsRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.secondaryButton {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 0;
+  background: #e9eef5;
+  color: var(--atena-secondary-400);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-size: 16px;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.editButtonCompact {
+  height: 28px;
+  padding: 0 10px;
+}
+
+.addButton {
+  composes: secondaryButton;
+}
+
+.primaryButton {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 0;
+  background: var(--atena-primary-600);
+  color: #ffffff;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-size: 16px;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cardHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--atena-secondary-600);
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+
+.statusPill {
+  background: var(--atena-success-200);
+  color: var(--atena-success-600);
+  border-radius: 999px;
+  height: 24px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.twoColGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+.fieldLabel {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--atena-neutral-200);
+  letter-spacing: 0.18px;
+  line-height: 1.5;
+}
+
+.fieldValue {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--atena-neutral-300);
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.additionalRow {
+  background: var(--atena-secondary-100);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.accordionItem {
+  background: #f5f7fa;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.accordionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.accordionHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.badgeCnpjAdditional {
+  background: #eadcff;
+  color: #9747ff;
+  border-radius: 999px;
+  padding: 2px 8px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.toggleMoreButton {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #7c8efd;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.accordionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cnaeChip {
+  border: 1px solid #527ca5;
+  border-radius: 20px;
+  padding: 2px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.cnaeChipText {
+  color: #345070;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.accordionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.additionalTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.additionalName {
+  color: var(--atena-secondary-600);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.tag {
+  color: #7c8efd;
+  background: var(--atena-primary-100);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  align-self: flex-start;
+  justify-self: flex-start;
+  max-width: 100%;
+}
+
+.usersActiveRow {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.smallLink {
+  color: var(--atena-primary-400);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@media (max-width: 1100px) {
+  .detailsWrap {
+    max-width: 100%;
+  }
+}
+

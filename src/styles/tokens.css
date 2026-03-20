@@ -1,0 +1,90 @@
+:root {
+  /* Color styles (Figma) */
+  --atena-primary-100: #dfe8ff;
+  --atena-primary-200: #c5d4ff;
+  --atena-primary-300: #a2b7ff;
+  --atena-primary-400: #7c8efd;
+  --atena-primary-600: #5352ed;
+  --atena-primary-700: #3632d0;
+  --atena-primary-800: #2d2ca7;
+
+  --atena-secondary-100: #f5f7fa;
+  --atena-secondary-200: #e9eef5;
+  --atena-secondary-300: #a5bdd4;
+  --atena-secondary-400: #527ca5;
+  --atena-secondary-600: #345070;
+  --atena-secondary-700: #b2741e;
+  --atena-secondary-800: #1e2938;
+
+  --atena-neutral-50: #ffffff;
+  --atena-neutral-100: #e7e7e7;
+  --atena-neutral-200: #8f9092;
+  --atena-neutral-300: #5c5e60;
+  --atena-neutral-400: #3d3e41;
+  --atena-neutral-600: #0b0d10;
+  --atena-neutral-800: #07080a;
+
+  --atena-success-100: #b9e9dd;
+  --atena-success-200: #98decd;
+  --atena-success-300: #68cfb6;
+  --atena-success-400: #4bc6a8;
+  --atena-success-600: #1ba785;
+  --atena-success-700: #158368;
+  --atena-success-800: #116550;
+
+  --atena-error-100: #f8bbbb;
+  --atena-error-200: #f49a9a;
+  --atena-error-300: #ef6c6c;
+  --atena-error-400: #ec4f4f;
+  --atena-error-600: #d22020;
+  --atena-error-700: #a41919;
+  --atena-error-800: #7f1313;
+
+  --atena-warning-100: #f9eeb6;
+  --atena-warning-200: #f6e692;
+  --atena-warning-300: #f2da61;
+  --atena-warning-400: #f0d342;
+  --atena-warning-600: #d7b611;
+  --atena-warning-700: #a88e0d;
+  --atena-warning-800: #826e0a;
+
+  /* Semantic tokens (practical for auth screens) */
+  --atena-surface: var(--atena-neutral-50);
+  --atena-surface-soft: #f6f8fa;
+  --atena-text: var(--atena-neutral-800);
+  --atena-text-muted: var(--atena-neutral-400);
+  --atena-border-soft: var(--atena-secondary-200);
+
+  --atena-primary: var(--atena-primary-600);
+  --atena-primary-contrast: #ffffff;
+
+  --atena-shadow-card: 0px 4px 10px 0px rgba(0, 0, 0, 0.05);
+  --atena-radius-card: 16px;
+  --atena-radius-input: 8px;
+  --atena-radius-button: 12px;
+
+  /* Typography (from Theme.md; line-height/letter-spacing are defined in components) */
+  --atena-font-inter: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+    "Apple Color Emoji", "Segoe UI Emoji";
+
+  --atena-display-large-size: 64px;
+  --atena-display-medium-size: 44px;
+  --atena-display-small-size: 36px;
+
+  --atena-headline-large-size: 32px;
+  --atena-headline-medium-size: 28px;
+  --atena-headline-small-size: 24px;
+
+  --atena-title-large-size: 22px;
+  --atena-title-medium-size: 16px;
+  --atena-title-small-size: 14px;
+
+  --atena-label-large-size: 14px;
+  --atena-label-medium-size: 12px;
+  --atena-label-small-size: 11px;
+
+  --atena-body-large-size: 16px;
+  --atena-body-medium-size: 14px;
+  --atena-body-small-size: 12px;
+}
+

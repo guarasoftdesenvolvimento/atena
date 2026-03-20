@@ -1,0 +1,31 @@
+.button {
+  background: var(--atena-primary);
+  height: 42px;
+  border-radius: var(--atena-radius-button);
+  border: 0;
+  width: 100%;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--atena-primary-700);
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.label {
+  font-size: 16px;
+  line-height: 1.2;
+  letter-spacing: 0;
+  font-weight: 700;
+  color: var(--atena-primary-contrast);
+}
+

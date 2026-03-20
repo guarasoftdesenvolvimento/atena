@@ -1,0 +1,98 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+}
+
+.label {
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  color: var(--atena-neutral-300);
+  font-weight: 400;
+}
+
+.inputShell {
+  background: var(--atena-surface);
+  border: 1px solid var(--atena-border-soft);
+  height: 40px;
+  border-radius: var(--atena-radius-input);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: border-color 120ms ease;
+}
+
+.inputShell:hover {
+  border-color: var(--atena-primary-400);
+}
+
+.inputShell:focus-within {
+  border-color: var(--atena-primary-400);
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  position: relative;
+}
+
+.icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.iconOverlayFrame {
+  position: absolute;
+  overflow: hidden;
+  display: block;
+}
+
+.iconOverlayFrame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.21px;
+  font-weight: 400;
+  color: var(--atena-neutral-200);
+}
+
+.input::placeholder {
+  color: var(--atena-neutral-200);
+}
+
+.rightIcon {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rightIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+

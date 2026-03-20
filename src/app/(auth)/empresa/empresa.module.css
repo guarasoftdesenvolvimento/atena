@@ -1,0 +1,261 @@
+.contentWrapper {
+  flex: 1 1 auto;
+  background: #f6f8fa;
+  padding: 20px;
+  min-height: calc(100vh - 80px);
+}
+
+.toolbarRow {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0 0 20px;
+  max-width: 960px;
+  width: 100%;
+}
+
+.searchBox {
+  background: #ffffff;
+  border: 1px solid #e9eef5;
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 320px;
+}
+
+.searchInput {
+  border: 0;
+  outline: none;
+  background: transparent;
+  flex: 1 1 auto;
+  font-size: 14px;
+  letter-spacing: 0.21px;
+  line-height: 1.5;
+  color: #3d3e41;
+}
+
+.searchInput::placeholder {
+  color: #c1c1c1;
+}
+
+.newClientButton {
+  background: #5352ed;
+  border-radius: 8px;
+  border: 0;
+  height: 40px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.newClientButtonLabel {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.clientsCard {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  max-width: 960px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cardTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.totalText {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: #345070;
+  line-height: 1.2;
+}
+
+.filterGroup {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 292px;
+}
+
+.filterLabel {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.18px;
+  color: #5c5e60;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.selectWrap {
+  flex: 1 1 auto;
+  border: 1px solid #e9eef5;
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.select {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  letter-spacing: 0.21px;
+  line-height: 1.5;
+  color: #3d3e41;
+  appearance: none;
+}
+
+.tableHeader {
+  background: #f5f7fa;
+  border-radius: 4px;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: 240px 1fr 1fr 140px 80px 60px;
+  align-items: center;
+  gap: 0;
+}
+
+.thText {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18px;
+  line-height: 1.5;
+  color: #345070;
+}
+
+.tableBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 240px 1fr 1fr 140px 80px 60px;
+  align-items: center;
+  padding: 10px 8px;
+  border-bottom: 1px solid rgba(193, 193, 193, 0.5);
+}
+
+.tdText {
+  font-size: 12px;
+  letter-spacing: 0.18px;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.tdName {
+  font-weight: 700;
+  color: #5c5e60;
+}
+
+.tdMuted {
+  font-weight: 500;
+  color: #8f9092;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pillActive {
+  background: #dcfce7;
+  color: #1ba785;
+}
+
+.pillInactive {
+  background: #f5f7fa;
+  color: #737791;
+  border: 1px solid #e9eef5;
+}
+
+.pillOverdue {
+  background: #ffe2e5;
+  color: #d22020;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.paginationRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.pageButton {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid #e9eef5;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #3d3e41;
+}
+
+.pageButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pageButtonActive {
+  background: #dfe8ff;
+  border-color: #c5d4ff;
+  color: #5352ed;
+}
+
+@media (max-width: 1100px) {
+  .toolbarRow {
+    justify-content: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .searchBox {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .tableHeader,
+  .row {
+    grid-template-columns: 220px 1fr 1fr 120px 90px 60px;
+  }
+}
+

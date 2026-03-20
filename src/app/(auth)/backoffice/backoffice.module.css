@@ -1,0 +1,307 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  background: #ffffff;
+  color: #1e2938;
+  padding-left: 280px;
+}
+
+.sidebar {
+  width: 280px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 20;
+}
+
+.sidebarLogoArea {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.sidebarSeparator {
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(to right, #efefef 0%, #ffffff 100%);
+}
+
+.sidebarItems {
+  flex: 1 1 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sideItem {
+  width: 240px;
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.sideItemActive {
+  background: #dfe8ff;
+  border: 1px solid #c5d4ff;
+  box-shadow: 0px 10px 20px 0px rgba(55, 69, 87, 0.1);
+}
+
+.sideItemTextActive {
+  font-family: "Inter", var(--atena-font-inter);
+  font-size: 18px;
+  color: #5352ed;
+  font-weight: 600;
+}
+
+.sideItemActive .sideIcon {
+  color: #5352ed;
+}
+
+.sideItemText {
+  font-family: "Inter", var(--atena-font-inter);
+  font-size: 18px;
+  color: #737791;
+  font-weight: 400;
+}
+
+.sidebarExitText {
+  font-family: "Inter", var(--atena-font-inter);
+  font-size: 16px;
+  color: #737791;
+  font-weight: 400;
+}
+
+.sideIcon {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #737791;
+}
+
+.baseIcon {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+}
+
+.vectorIcon {
+  position: absolute;
+  object-fit: fill;
+  display: block;
+}
+
+.sideItem:not(.sideItemActive):hover {
+  background: #f6f8fa;
+}
+
+.sidebarFooter {
+  padding: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.exitButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border-radius: 16px;
+  box-shadow: 0px 20px 50px 0px rgba(55, 69, 87, 0.1);
+}
+
+.main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .page {
+    padding-left: 0;
+  }
+
+  .sidebar {
+    position: relative;
+    height: auto;
+  }
+}
+
+.topHeader {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  background: #ffffff;
+}
+
+.topTitle {
+  flex: 1 1 auto;
+  font-family: "Poppins", var(--atena-font-inter);
+  font-size: 26px;
+  font-weight: 600;
+  color: #1e2938;
+}
+
+.userBadge {
+  padding: 12px;
+  border-radius: 16px;
+  box-shadow: 0px 20px 50px 0px rgba(55, 69, 87, 0.1);
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.userName {
+  font-family: "Inter", var(--atena-font-inter);
+  font-size: 16px;
+  font-weight: 600;
+  color: #527ca5;
+}
+
+.contentBg {
+  flex: 1 1 auto;
+  background: #f6f8fa;
+  padding: 20px;
+  min-height: calc(100vh - 80px);
+}
+
+.contentCard {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contentHeader {
+  display: flex;
+  align-items: center;
+}
+
+.contentHeaderTitle {
+  font-family: "Inter", var(--atena-font-inter);
+  font-size: 16px;
+  font-weight: 700;
+  color: #345070;
+}
+
+.statsRow {
+  display: flex;
+  gap: 31px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.statCard {
+  width: 160px;
+  height: 184px;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.statIconWrap {
+  width: 24px;
+  height: 24px;
+  position: relative;
+}
+
+.statIconWrap :global(.ellipse) {
+  position: absolute;
+  left: -8px;
+  top: -8px;
+  width: 40px;
+  height: 40px;
+}
+
+.statIconWrap :global(.ellipse) img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.statIconWrap :global(.icon) {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+}
+
+.statIconWrap :global(.icon) img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.statIconWrap :global(.vector) {
+  position: absolute;
+  inset: 0;
+}
+
+.statIconWrap :global(.vector) img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.statValue {
+  font-family: "Poppins", var(--atena-font-inter);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  color: #151d48;
+}
+
+.statTitle {
+  font-family: "Poppins", var(--atena-font-inter);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #425166;
+}
+
+.statFooter {
+  font-family: "Poppins", var(--atena-font-inter);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: #4079ed;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    display: none;
+  }
+  .topHeader {
+    padding: 16px;
+  }
+  .statsRow {
+    gap: 16px;
+  }
+}
+
