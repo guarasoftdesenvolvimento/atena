@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronDown, Plus, Search } from "lucide-react";
 import backofficeStyles from "../backoffice.module.css";
-import styles from "../../empresa/empresa.module.css";
+import styles from "./clientes.module.css";
 import AddClientModal from "../AddClientModal";
 
 import type { ClientStatus } from "../types";
