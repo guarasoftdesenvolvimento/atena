@@ -292,15 +292,13 @@
 
 .sheet {
   background-color: #ffffff;
-  width: 400px;
+  width: 360px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 48px 16px 24px;
   transform: translateX(100%);
   transition: transform 0.3s ease;
-  border-bottom-left-radius: 16px;
-  border-top-left-radius: 16px;
+  box-shadow: -4px 0 32px rgba(55, 69, 87, 0.12);
 }
 
 .sheetVisible {
@@ -308,23 +306,25 @@
 }
 
 .sheetHeader {
-  margin-bottom: 32px;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid #e9eef5;
 }
 
 .sheetTitle {
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: 16px;
-  color: #345070;
-  line-height: 1.2;
+  font-size: 18px;
+  color: #1e2938;
+  margin: 0;
 }
 
 .sheetBody {
   flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  overflow-y: auto;
+  gap: 20px;
 }
 
 .filterGroup {
@@ -369,12 +369,11 @@
 }
 
 .sheetFooter {
-  border-top: 1px solid #dfe8ff;
-  padding-top: 20px;
+  padding: 16px 24px;
+  border-top: 1px solid #e9eef5;
   display: flex;
-  align-items: center;
   justify-content: flex-end;
-  gap: 24px;
+  gap: 12px;
 }
 
 .clearButton {
