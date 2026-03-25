@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useId, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
@@ -100,4 +100,3 @@ export default function AddAdditionalCnpjModal({ open, onClose, onAdd }: AddAddi
     </div>
   );
 }
-

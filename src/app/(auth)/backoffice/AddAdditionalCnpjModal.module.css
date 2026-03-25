@@ -1,4 +1,4 @@
-.overlay {
+﻿.overlay {
   position: fixed;
   inset: 0;
   background: rgba(16, 24, 40, 0.25);
@@ -159,4 +159,3 @@
     max-width: 386px;
   }
 }
-

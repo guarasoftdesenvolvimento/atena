@@ -1,0 +1,1012 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.contentWrapper {
+  background-color: #f6f8fa;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  min-height: calc(100vh - 80px);
+}
+
+.mainCard {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.registrosText {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #345070;
+  line-height: 1.2;
+}
+
+.filterButton {
+  border: 1px solid #5352ed;
+  background: #ffffff;
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #5352ed;
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tableHeader {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  align-items: center;
+  background: #f5f7fa;
+  border-radius: 4px;
+  padding: 4px 8px;
+  column-gap: 12px;
+}
+
+.headerCell {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  color: #345070;
+}
+
+.statusHeaderCell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+}
+
+.actionsHeaderCell {
+  text-align: right;
+}
+
+.tableBody {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  align-items: center;
+  border-bottom: 1px solid rgba(193, 193, 193, 0.5);
+  padding: 10px 8px;
+  column-gap: 12px;
+}
+
+.tableRowLast {
+  border-bottom: none;
+}
+
+.idCell {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  color: #5c5e60;
+}
+
+.textCell {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  color: #8f9092;
+}
+
+.statusCell {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.statusBadge {
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  white-space: nowrap;
+}
+
+.actionCell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+
+
+/* Sheet de filtros */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(55, 69, 87, 0.3);
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+.overlayVisible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.sheet {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 360px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  box-shadow: -4px 0 32px rgba(55, 69, 87, 0.12);
+}
+
+.sheetVisible {
+  transform: translateX(0);
+}
+
+.sheetHeader {
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid #e9eef5;
+}
+
+.sheetTitle {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #1e2938;
+  margin: 0;
+}
+
+.sheetBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filterLabel {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: #527ca5;
+  letter-spacing: 0.18px;
+}
+
+.dateRangeRow {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.dateInputLabel {
+  display: block;
+  margin-bottom: 8px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: #8f9092;
+  letter-spacing: 0.18px;
+}
+
+.inputField {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #e9eef5;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #3d3e41;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.inputField:hover,
+.inputField:focus-within {
+  border-color: #5352ed;
+}
+
+.inputFieldActive {
+  border-color: #5352ed;
+}
+
+.inputFieldButton {
+  width: 100%;
+  background: #ffffff;
+}
+
+.fieldValue {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdownWrapper {
+  position: relative;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 3;
+  background: #ffffff;
+  border: 1px solid #e9eef5;
+  border-radius: 8px;
+  box-shadow: 0 8px 18px rgba(52, 80, 112, 0.12);
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.dropdownOption {
+  width: 100%;
+  border: none;
+  background: #ffffff;
+  text-align: left;
+  padding: 10px 12px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #3d3e41;
+  cursor: pointer;
+}
+
+.dropdownOption:hover {
+  background: #f5f7fa;
+}
+
+.dropdownOptionActive {
+  background: #e9eef5;
+  color: #345070;
+}
+
+.datePickerField {
+  position: relative;
+  width: 100%;
+}
+
+.dateNativeInput {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+}
+
+.sheetFooter {
+  padding: 16px 24px;
+  border-top: 1px solid #e9eef5;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.clearButton {
+  border: 1px solid #e9eef5;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #8f9092;
+  cursor: pointer;
+}
+
+.applyButton {
+  border: none;
+  background: #5352ed;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+
+
+
+.actionMenuWrapper {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.moreButton {
+  border: none;
+  background: transparent;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #5c5e60;
+  transition: all 0.2s;
+}
+
+.moreButton:hover,
+.moreButtonActive {
+  background-color: #e9eef5;
+  color: #5352ed;
+}
+
+.popover {
+  position: absolute;
+  top: 36px;
+  right: 0;
+  width: 196px;
+  background: #ffffff;
+  border: 1px solid #c1c1c1;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  z-index: 30;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.popoverItem {
+  width: 100%;
+  border: none;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s;
+}
+
+.popoverItem:hover {
+  background-color: #f5f7fa;
+}
+
+.popoverItem:last-child {
+  border-bottom: none;
+}
+
+.popoverIcon {
+  color: #5c5e60;
+  flex-shrink: 0;
+}
+
+.popoverText {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  color: #5c5e60;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.popoverItemDanger .popoverIcon,
+.popoverItemDanger .popoverText {
+  color: #ec4f4f;
+}
+
+.remessaViewOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: rgba(55, 69, 87, 0.3);
+}
+
+.remessaViewModal {
+  width: min(600px, 100%);
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+  border-radius: 16px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.remessaViewHeader {
+  border-bottom: 1px solid #dfe8ff;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.remessaViewTitleWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.remessaViewIconWrap {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remessaViewTitle {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.1;
+  color: #345070;
+}
+
+.remessaViewHeaderRight {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.remessaViewStatus {
+  border-radius: 100px;
+  padding: 2px 8px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  white-space: nowrap;
+}
+
+.remessaViewCloseButton {
+  border: none;
+  background: #dfe8ff;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.remessaViewCloseButton:hover {
+  background: #cfdcff;
+}
+
+.remessaViewBody {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.remessaViewInfoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  gap: 16px;
+}
+
+.remessaViewInfoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.remessaViewInfoLabel {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+  color: #345070;
+}
+
+.remessaViewInfoValue {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #5c5e60;
+}
+
+.remessaViewTotal {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.1;
+  color: #345070;
+}
+
+.remessaViewTable {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.remessaViewTableHeader {
+  background: #f5f7fa;
+  border-radius: 4px;
+  padding: 4px 8px;
+  display: grid;
+  grid-template-columns: 110px 240px 120px;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  color: #345070;
+}
+
+.remessaViewTableRow {
+  border-bottom: 1px solid rgba(193, 193, 193, 0.5);
+  padding: 10px 8px;
+  display: grid;
+  grid-template-columns: 110px 240px 120px;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+}
+
+.remessaViewInvoiceNumber {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #5352ed;
+  font-weight: 500;
+}
+
+.remessaViewName {
+  color: #5c5e60;
+  font-weight: 700;
+}
+
+.remessaViewValue {
+  color: #8f9092;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .remessaViewTableHeader,
+  .remessaViewTableRow {
+    grid-template-columns: minmax(110px, 1fr) minmax(150px, 2fr) minmax(100px, 1fr);
+    column-gap: 8px;
+  }
+}
+
+/* Modal de pagamento da remessa */
+.remessaPaymentOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: rgba(55, 69, 87, 0.3);
+}
+
+.remessaPaymentModal {
+  position: relative;
+  width: min(730px, 100%);
+  max-height: min(760px, calc(100vh - 80px));
+  overflow-y: auto;
+  border-radius: 16px;
+  border: 1px solid #e9eef5;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.remessaPaymentCloseButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border: none;
+  background: #dfe8ff;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.remessaPaymentCloseButton:hover {
+  background: #cfdcff;
+}
+
+.remessaPaymentHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 34px;
+}
+
+.remessaPaymentBrand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.remessaPaymentBrandIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: #5352ed;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remessaPaymentBrandText {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  color: #3d3e41;
+}
+
+.remessaPaymentCompany {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.remessaPaymentCompanyName {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+  color: #345070;
+}
+
+.remessaPaymentCompanyDoc {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.21px;
+  color: #5c5e60;
+}
+
+.remessaPaymentTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.remessaPaymentTitle {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.5;
+  color: #1e2938;
+}
+
+.remessaPaymentStatus {
+  padding: 2px 8px;
+  border-radius: 100px;
+  background: #f9eeb6;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  color: #826e0a;
+}
+
+.remessaPaymentSummaryCard {
+  border: 1px solid #e9eef5;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.remessaPaymentSummaryTopRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.remessaPaymentSummaryRight {
+  text-align: right;
+}
+
+.remessaPaymentSummaryLabel {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+  color: #345070;
+}
+
+.remessaPaymentSummaryValue {
+  margin: 4px 0 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.21px;
+  color: #5c5e60;
+}
+
+.remessaPaymentDivider {
+  width: 100%;
+  height: 1px;
+  background: #e9eef5;
+}
+
+.remessaPaymentTableCard {
+  border: 1px solid #e9eef5;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.remessaPaymentTableHeader {
+  border-radius: 4px;
+  padding: 4px 8px;
+  display: grid;
+  grid-template-columns: 1fr 120px 120px;
+  align-items: center;
+  column-gap: 8px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  color: #345070;
+}
+
+.remessaPaymentTableRow {
+  border-bottom: 1px solid #e9eef5;
+  padding: 10px 8px;
+  display: grid;
+  grid-template-columns: 1fr 120px 120px;
+  align-items: center;
+  column-gap: 8px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  color: #5c5e60;
+}
+
+.remessaPaymentTableName {
+  font-weight: 700;
+}
+
+.remessaPaymentLoadMoreButton {
+  margin-top: 4px;
+  border: 1px solid #5352ed;
+  background: #ffffff;
+  color: #5352ed;
+  border-radius: 8px;
+  height: 40px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.remessaPaymentLoadMoreButton:hover {
+  background: #f5f7fa;
+}
+
+.remessaPaymentPixCard {
+  border: 1px solid #e9eef5;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.remessaPaymentPixTitle {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+  color: #345070;
+  text-align: center;
+}
+
+.remessaPaymentPixKeyRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.remessaPaymentPixKeyValue {
+  width: 311px;
+  border: 1px solid #a5bdd4;
+  border-radius: 8px;
+  padding: 4px 16px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.21px;
+  color: #5c5e60;
+  text-align: center;
+}
+
+.remessaPaymentPixCopyButton {
+  border: none;
+  border-radius: 8px;
+  background: #e9eef5;
+  color: #527ca5;
+  height: 40px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.remessaPaymentPixCopyButton:hover {
+  background: #dfe8ff;
+}
+
+.remessaPaymentQrCode {
+  width: 280px;
+  height: 280px;
+  object-fit: cover;
+}
+
+.remessaPaymentSecurity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px 0;
+}
+
+.remessaPaymentSecurityTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #5352ed;
+}
+
+.remessaPaymentSecuritySubtitle {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.2;
+  color: #8f9092;
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .remessaPaymentTitleRow {
+    align-items: flex-start;
+    gap: 8px;
+    flex-direction: column;
+  }
+
+  .remessaPaymentSummaryTopRow {
+    gap: 8px;
+    flex-direction: column;
+  }
+
+  .remessaPaymentSummaryRight {
+    text-align: left;
+  }
+
+  .remessaPaymentTableHeader,
+  .remessaPaymentTableRow {
+    grid-template-columns: 1fr 92px 92px;
+  }
+
+  .remessaPaymentPixKeyRow {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .remessaPaymentPixKeyValue {
+    width: 100%;
+  }
+
+  .remessaPaymentPixCopyButton {
+    width: 100%;
+  }
+}

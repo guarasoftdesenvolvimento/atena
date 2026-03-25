@@ -6,11 +6,21 @@ import {
   Filter,
   PieChart,
   FileText,
+  StickyNote,
   Info,
   ChevronRight,
   Search,
   ListFilter,
   ChevronDown,
+  CloudDownload,
+  CloudUpload,
+  CheckCircle2,
+  Plus,
+  Lock,
+  GitBranch,
+  X,
+  Copy,
+  Shield,
 } from "lucide-react";
 import styles from "./notas-fiscais.module.css";
 
@@ -80,6 +90,9 @@ const invoices: Invoice[] = [
   { id: "7", numero: "#NF1258", nome: "Felipe Alves dos Santos", dataEmissao: "09/07/2025", categorias: [{ label: "Categoria 1", cor: "verde" }, { label: "Cat 2", cor: "roxo" }], status: "emitida" },
   { id: "8", numero: "#NF1258", nome: "Felipe Alves dos Santos", dataEmissao: "09/07/2025", categorias: [{ label: "Categoria 1", cor: "laranja" }, { label: "Cat 2", cor: "azul" }], status: "emitida" },
 ];
+
+const REMESSA_QR_CODE_IMAGE_URL = "https://www.figma.com/api/mcp/asset/25095259-1a05-471f-9169-e74d1ba591f5";
+const REMESSA_PIX_KEY = "656s5dsdsdwedeafdfd551fd";
 
 // ─── Donut chart ──────────────────────────────────────────────────────────────
 
@@ -210,26 +223,240 @@ function StatusBadge({ status }: { status: string }) {
 
 // ─── Filter Sheet ─────────────────────────────────────────────────────────────
 
-function FilterSheet({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+type ActiveTab = "visao" | "notas";
+
+type FilterOption = {
+  label: string;
+  value: string;
+};
+
+type CreatedRemessa = {
+  id: string;
+  descricao: string;
+  dataVencimento: string;
+  invoices: Invoice[];
+  valorTotal: number;
+};
+
+function formatDateForDisplay(isoDate: string) {
+  if (!isoDate) return "";
+  const [year, month, day] = isoDate.split("-");
+  if (!year || !month || !day) return isoDate;
+  return `${day}/${month}/${year}`;
+}
+
+function formatBRL(value: number) {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+  }).format(value);
+}
+
+function FilterSelect({
+  value,
+  options,
+  onChange,
+}: {
+  value: string;
+  options: FilterOption[];
+  onChange: (value: string) => void;
+}) {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const wrapperRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    function onDocumentMouseDown(event: MouseEvent) {
+      if (!wrapperRef.current?.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+
+    function onDocumentKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", onDocumentMouseDown);
+    document.addEventListener("keydown", onDocumentKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onDocumentMouseDown);
+      document.removeEventListener("keydown", onDocumentKeyDown);
+    };
+  }, []);
+
+  const selectedLabel = options.find((option) => option.value === value)?.label ?? "Todos";
+
+  return (
+    <div className={styles.dropdownWrapper} ref={wrapperRef}>
+      <button
+        type="button"
+        className={`${styles.inputField} ${styles.inputFieldButton} ${isOpen ? styles.inputFieldActive : ""}`}
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
+        <span className={styles.fieldValue}>{selectedLabel}</span>
+        <ChevronDown size={20} color="#737791" />
+      </button>
+
+      {isOpen && (
+        <div className={styles.dropdownMenu}>
+          {options.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              className={`${styles.dropdownOption} ${option.value === value ? styles.dropdownOptionActive : ""}`}
+              onClick={() => {
+                onChange(option.value);
+                setIsOpen(false);
+              }}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FilterDatePicker({
+  value,
+  onChange,
+  className,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  className?: string;
+}) {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  const openDatePicker = React.useCallback(() => {
+    const input = inputRef.current;
+    if (!input) return;
+
+    const pickerInput = input as HTMLInputElement & { showPicker?: () => void };
+    if (typeof pickerInput.showPicker === "function") {
+      pickerInput.showPicker();
+      return;
+    }
+
+    input.focus();
+    input.click();
+  }, []);
+
+  return (
+    <div
+      className={`${styles.inputField} ${styles.datePickerField} ${className ?? ""}`}
+      role="button"
+      tabIndex={0}
+      onClick={openDatePicker}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openDatePicker();
+        }
+      }}
+    >
+      <span className={styles.fieldValue}>{value ? formatDateForDisplay(value) : "Selecione"}</span>
+      <ChevronDown size={20} color="#737791" />
+      <input
+        ref={inputRef}
+        type="date"
+        className={styles.dateNativeInput}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+      />
+    </div>
+  );
+}
+
+function FilterSheet({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) {
+  const [visaoStatus, setVisaoStatus] = React.useState("todos");
+  const [visaoCategoria, setVisaoCategoria] = React.useState("todos");
+  const [visaoDataDe, setVisaoDataDe] = React.useState("2025-01-01");
+  const [visaoDataAte, setVisaoDataAte] = React.useState("2025-02-02");
+
+  const statusOptions = React.useMemo<FilterOption[]>(
+    () => [
+      { value: "todos", label: "Todos" },
+      { value: "emitida", label: "Recebida (a pagar)" },
+      { value: "agendada", label: "Agendada para pagamento" },
+      { value: "analise", label: "Pagamento em análise" },
+      { value: "paga", label: "Paga" },
+      { value: "expirada", label: "Expirada (não paga)" },
+      { value: "cancelada", label: "Cancelada" },
+    ],
+    []
+  );
+
+  const categoriaOptions = React.useMemo<FilterOption[]>(
+    () => [
+      { value: "todos", label: "Todos" },
+      { value: "categoria-1", label: "Categoria 1" },
+      { value: "categoria-2", label: "Categoria 2" },
+      { value: "categoria-3", label: "Categoria 3" },
+      { value: "categoria-4", label: "Categoria 4" },
+      { value: "categoria-5", label: "Categoria 5" },
+    ],
+    []
+  );
+
+  function handleClear() {
+    setVisaoStatus("todos");
+    setVisaoCategoria("todos");
+    setVisaoDataDe("2025-01-01");
+    setVisaoDataAte("2025-02-02");
+  }
+
   return (
     <div className={`${styles.overlay} ${isOpen ? styles.overlayVisible : ""}`} onClick={onClose}>
       <div className={`${styles.sheet} ${isOpen ? styles.sheetVisible : ""}`} onClick={(e) => e.stopPropagation()}>
         <div className={styles.sheetHeader}>
           <h2 className={styles.sheetTitle}>Filtros:</h2>
         </div>
+
         <div className={styles.sheetBody}>
-          {["Status", "Parceiro PJ", "Período"].map((f) => (
-            <div key={f} className={styles.filterGroup}>
-              <label className={styles.filterLabel}>Filtrar por {f.toLowerCase()}</label>
-              <div className={styles.inputField}>
-                <span>Todos</span>
-                <ChevronDown size={16} color="#737791" />
+          <>
+            <div className={styles.filterGroup}>
+              <label className={styles.filterLabel}>Filtrar por status</label>
+              <FilterSelect value={visaoStatus} options={statusOptions} onChange={setVisaoStatus} />
+            </div>
+            <div className={styles.filterGroup}>
+              <label className={styles.filterLabel}>Filtrar por categoria</label>
+              <FilterSelect value={visaoCategoria} options={categoriaOptions} onChange={setVisaoCategoria} />
+            </div>
+            <div className={styles.filterGroup}>
+              <label className={styles.filterLabel}>Filtrar por data</label>
+              <div className={styles.dateRangeRow}>
+                <div style={{ flex: 1 }}>
+                  <span className={styles.dateInputLabel}>De</span>
+                  <FilterDatePicker value={visaoDataDe} onChange={setVisaoDataDe} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <span className={styles.dateInputLabel}>{"At\u00E9"}</span>
+                  <FilterDatePicker value={visaoDataAte} onChange={setVisaoDataAte} />
+                </div>
               </div>
             </div>
-          ))}
+          </>
         </div>
         <div className={styles.sheetFooter}>
-          <button className={styles.clearButton} onClick={onClose}>LIMPAR</button>
+          <button
+            className={styles.clearButton}
+            onClick={() => {
+              handleClear();
+              onClose();
+            }}
+          >
+            LIMPAR
+          </button>
           <button className={styles.applyButton} onClick={onClose}>
             <ListFilter size={20} />
             APLICAR FILTRO
@@ -242,9 +469,434 @@ function FilterSheet({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
 
 // ─── Main page ────────────────────────────────────────────────────────────────
 
+
+function InvoiceDetailsModal({
+  invoice,
+  onClose,
+}: {
+  invoice: Invoice | null;
+  onClose: () => void;
+}) {
+  const [status, setStatus] = React.useState("paga");
+  const [paymentProofFileName, setPaymentProofFileName] = React.useState("");
+  const paymentProofInputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    if (invoice) {
+      setStatus(invoice.status);
+      setPaymentProofFileName("");
+    }
+  }, [invoice]);
+
+  const statusOptions = React.useMemo<FilterOption[]>(
+    () => [
+      { value: "emitida", label: "Recebida (a pagar)" },
+      { value: "agendada", label: "Agendada para pagamento" },
+      { value: "analise", label: "Pagamento em analise" },
+      { value: "paga", label: "Paga" },
+      { value: "expirada", label: "Expirada (nao paga)" },
+      { value: "cancelada", label: "Cancelada" },
+    ],
+    []
+  );
+
+  const openProofUploader = React.useCallback(() => {
+    paymentProofInputRef.current?.click();
+  }, []);
+
+  if (!invoice) return null;
+
+  return (
+    <div className={styles.invoiceModalOverlay} onClick={onClose}>
+      <div className={styles.invoiceModal} onClick={(event) => event.stopPropagation()}>
+        <div className={styles.invoiceModalHeader}>
+          <div className={styles.invoiceModalTitleGroup}>
+            <StickyNote size={24} color="#345070" />
+            <h2 className={styles.invoiceModalTitle}>Nota Fiscal</h2>
+          </div>
+          <button type="button" className={styles.invoiceModalCloseButton} onClick={onClose}>
+            <X size={16} color="#7c8efd" />
+          </button>
+        </div>
+
+        <div className={styles.invoiceModalBody}>
+          <div className={styles.filterGroup}>
+            <label className={styles.filterLabel}>Status da NF</label>
+            <div className={styles.invoiceStatusSelect}>
+              <FilterSelect value={status} options={statusOptions} onChange={setStatus} />
+            </div>
+          </div>
+
+          <div className={styles.invoiceMetaGroup}>
+            <div className={styles.invoiceMetaRow}>
+              <div className={styles.invoiceMetaItem}>
+                <span className={styles.invoiceMetaLabel}>{"N\u00BA da NF"}</span>
+                <span className={styles.invoiceMetaValueStrong}>{invoice.numero}</span>
+              </div>
+              <div className={styles.invoiceMetaItem}>
+                <span className={styles.invoiceMetaLabel}>{"Data de emiss\u00E3o da NF"}</span>
+                <span className={styles.invoiceMetaValue}>{invoice.dataEmissao}</span>
+              </div>
+            </div>
+            <div className={styles.invoiceMetaRow}>
+              <div className={styles.invoiceMetaItem}>
+                <span className={styles.invoiceMetaLabel}>Contrato</span>
+                <span className={styles.invoiceMetaValue}>#14578-Felipe-Alves</span>
+              </div>
+              <div className={styles.invoiceMetaItem}>
+                <span className={styles.invoiceMetaLabel}>Valor da NF</span>
+                <span className={styles.invoiceMetaValue}>R$ 5.000,00</span>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.invoiceFileSection}>
+            <span className={styles.invoiceMetaLabel}>Nota Fiscal</span>
+            <div className={styles.invoiceFileCard}>
+              <span className={styles.invoiceFileName}>NF-1234</span>
+              <button type="button" className={styles.invoiceFileActionButton}>
+                <CloudDownload size={12} />
+                Baixar
+              </button>
+            </div>
+          </div>
+
+          <div className={styles.invoiceFileSection}>
+            <span className={styles.invoiceMetaLabel}>Comprovante de pgto</span>
+            <div
+              className={styles.invoiceUploadCard}
+              role="button"
+              tabIndex={0}
+              onClick={openProofUploader}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  openProofUploader();
+                }
+              }}
+            >
+              <input
+                ref={paymentProofInputRef}
+                type="file"
+                className={styles.invoiceHiddenFileInput}
+                accept=".pdf,.png,.jpg,.jpeg,.webp"
+                onChange={(event) => {
+                  const selectedFile = event.target.files?.[0];
+                  setPaymentProofFileName(selectedFile?.name ?? "");
+                }}
+              />
+              <div
+                className={`${styles.invoiceFileActionButton} ${styles.invoiceUploadButton} ${paymentProofFileName ? styles.invoiceUploadButtonHasFile : ""}`}
+              >
+                <CloudUpload size={12} />
+                {paymentProofFileName || "Clique para fazer o upload do comprovante de pagamento"}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.invoiceModalFooter}>
+          <button type="button" className={styles.invoiceCancelButton} onClick={onClose}>
+            CANCELAR
+          </button>
+          <button type="button" className={styles.invoiceSaveButton} onClick={onClose}>
+            <CheckCircle2 size={20} />
+            {"SALVAR ALTERA\u00C7\u00D5ES"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RemessaInfoModal({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) {
+  if (!isOpen) return null;
+
+  return (
+    <div className={styles.remessaInfoOverlay} onClick={onClose}>
+      <div className={styles.remessaInfoModal} onClick={(event) => event.stopPropagation()}>
+        <h3 className={styles.remessaInfoTitle}>{"O que \u00E9 uma Remessa de pagamento?"}</h3>
+        <p className={styles.remessaInfoText}>
+          {"Use essa funcionalidade para pagar v\u00E1rios parceiros PJ de uma vez s\u00F3, com controle, automa\u00E7\u00E3o e sem erro manual."}
+        </p>
+
+        <p className={styles.remessaInfoSubtitle}>Como funciona:</p>
+        <ol className={styles.remessaSteps}>
+          <li className={styles.remessaStepItem}>
+            <span className={styles.remessaStepBadge}>1</span>
+            <span>{"Voc\u00EA seleciona todas as notas fiscais que deseja pagar."}</span>
+          </li>
+          <li className={styles.remessaStepItem}>
+            <span className={styles.remessaStepBadge}>2</span>
+            <span>{"Define um nome e data de vencimento para essa remessa."}</span>
+          </li>
+          <li className={styles.remessaStepItem}>
+            <span className={styles.remessaStepBadge}>3</span>
+            <span>{"O sistema gera um \u00FAnico boleto ou QR PIX com o valor total:"}</span>
+          </li>
+        </ol>
+
+        <ul className={styles.remessaSubList}>
+          <li>{"Envia o valor para cada parceiro conforme sua NF (split autom\u00E1tico)."}</li>
+          <li>Anexa os comprovantes automaticamente.</li>
+          <li>{"Atualiza o status de todas as NFs como 'Pagas'."}</li>
+        </ul>
+
+        <div className={styles.remessaLockLine}>
+          <Lock size={14} color="#c9a800" />
+          <span>{"Tudo isso com rastreabilidade e sem trabalho manual."}</span>
+        </div>
+
+        <button type="button" className={styles.remessaContinueButton} onClick={onClose}>
+          Continuar
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function CreateRemessaModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  invoices,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (remessa: CreatedRemessa) => void;
+  invoices: Invoice[];
+}) {
+  const [descricao, setDescricao] = React.useState("Pagamento de Julho");
+  const [dataVencimento, setDataVencimento] = React.useState("2025-12-12");
+
+  const remessaInvoices = React.useMemo(() => invoices.slice(0, 4), [invoices]);
+  const valorUnitario = 5000;
+  const valorTotal = remessaInvoices.length * valorUnitario;
+
+  React.useEffect(() => {
+    if (isOpen) {
+      setDescricao("Pagamento de Julho");
+      setDataVencimento("2025-12-12");
+    }
+  }, [isOpen]);
+
+  function handleCreateRemessa() {
+    onSubmit({
+      id: "#6595",
+      descricao,
+      dataVencimento,
+      invoices: remessaInvoices,
+      valorTotal,
+    });
+  }
+
+  if (!isOpen) return null;
+
+  return (
+    <div className={styles.createRemessaOverlay} onClick={onClose}>
+      <div className={styles.createRemessaModal} onClick={(event) => event.stopPropagation()}>
+        <div className={styles.createRemessaHeader}>
+          <div className={styles.createRemessaTitleGroup}>
+            <GitBranch size={24} color="#345070" />
+            <div className={styles.createRemessaTitleText}>
+              <h3 className={styles.createRemessaTitle}>Nova remessa de pagamento</h3>
+              <p className={styles.createRemessaSubtitle}>Economize tempo e evite erros manuais.</p>
+            </div>
+          </div>
+          <button type="button" className={styles.createRemessaCloseButton} onClick={onClose}>
+            <X size={16} color="#7c8efd" />
+          </button>
+        </div>
+
+        <div className={styles.createRemessaBody}>
+          <div className={styles.createRemessaFieldsRow}>
+            <div className={styles.createRemessaFieldGrow}>
+              <label className={styles.createRemessaFieldLabel}>Descrição da remessa</label>
+              <div className={styles.createRemessaTextField}>
+                <input
+                  type="text"
+                  value={descricao}
+                  onChange={(event) => setDescricao(event.target.value)}
+                  className={styles.createRemessaTextInput}
+                />
+              </div>
+            </div>
+
+            <div className={styles.createRemessaFieldDate}>
+              <label className={styles.createRemessaFieldLabel}>Data de vencimento</label>
+              <FilterDatePicker
+                value={dataVencimento}
+                onChange={setDataVencimento}
+                className={styles.createRemessaInputShell}
+              />
+            </div>
+          </div>
+
+          <p className={styles.createRemessaTotal}>Valor total: {formatBRL(valorTotal)}</p>
+
+          <div className={styles.createRemessaTable}>
+            <div className={styles.createRemessaTableHeader}>
+              <span>Nº da NF</span>
+              <span>Nome</span>
+              <span>Valor</span>
+            </div>
+
+            {remessaInvoices.map((invoice) => (
+              <div key={invoice.id} className={styles.createRemessaTableRow}>
+                <span>{invoice.numero}</span>
+                <span className={styles.createRemessaTableName}>{invoice.nome}</span>
+                <span>{formatBRL(valorUnitario)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.createRemessaFooter}>
+          <button type="button" className={styles.createRemessaCancelButton} onClick={onClose}>
+            CANCELAR
+          </button>
+          <button type="button" className={styles.createRemessaSubmitButton} onClick={handleCreateRemessa}>
+            <CheckCircle2 size={20} />
+            CRIAR REMESSA
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RemessaPaymentModal({
+  remessa,
+  onClose,
+}: {
+  remessa: CreatedRemessa | null;
+  onClose: () => void;
+}) {
+  const [copied, setCopied] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!remessa) {
+      setCopied(false);
+    }
+  }, [remessa]);
+
+  if (!remessa) return null;
+
+  async function handleCopyPixKey() {
+    try {
+      await navigator.clipboard.writeText(REMESSA_PIX_KEY);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      setCopied(false);
+    }
+  }
+
+  return (
+    <div className={styles.remessaPaymentOverlay} onClick={onClose}>
+      <div className={styles.remessaPaymentModal} onClick={(event) => event.stopPropagation()}>
+        <button type="button" className={styles.remessaPaymentCloseButton} onClick={onClose}>
+          <X size={16} color="#7c8efd" />
+        </button>
+
+        <div className={styles.remessaPaymentHeader}>
+          <div className={styles.remessaPaymentBrand}>
+            <div className={styles.remessaPaymentBrandIcon}>
+              <Shield size={16} color="#ffffff" />
+            </div>
+            <span className={styles.remessaPaymentBrandText}>SeuPJ</span>
+          </div>
+          <div className={styles.remessaPaymentCompany}>
+            <span className={styles.remessaPaymentCompanyName}>GuaraSoft</span>
+            <span className={styles.remessaPaymentCompanyDoc}>40.222.222/0001-00</span>
+          </div>
+        </div>
+
+        <div className={styles.remessaPaymentTitleRow}>
+          <h3 className={styles.remessaPaymentTitle}>Remessa {remessa.id}</h3>
+          <span className={styles.remessaPaymentStatus}>A pagar</span>
+        </div>
+
+        <div className={styles.remessaPaymentSummaryCard}>
+          <div className={styles.remessaPaymentSummaryTopRow}>
+            <div>
+              <p className={styles.remessaPaymentSummaryLabel}>Valor total</p>
+              <p className={styles.remessaPaymentSummaryValue}>{formatBRL(remessa.valorTotal)}</p>
+            </div>
+            <div className={styles.remessaPaymentSummaryRight}>
+              <p className={styles.remessaPaymentSummaryLabel}>Vencimento</p>
+              <p className={styles.remessaPaymentSummaryValue}>{formatDateForDisplay(remessa.dataVencimento)}</p>
+            </div>
+          </div>
+          <div className={styles.remessaPaymentDivider} />
+          <div>
+            <p className={styles.remessaPaymentSummaryLabel}>Descricao</p>
+            <p className={styles.remessaPaymentSummaryValue}>{remessa.descricao}</p>
+          </div>
+        </div>
+
+        <div className={styles.remessaPaymentTableCard}>
+          <div className={styles.remessaPaymentTableHeader}>
+            <span>Nome</span>
+            <span>Nº da NF</span>
+            <span>Valor</span>
+          </div>
+          {remessa.invoices.map((invoice) => (
+            <div key={invoice.id} className={styles.remessaPaymentTableRow}>
+              <span className={styles.remessaPaymentTableName}>{invoice.nome}</span>
+              <span>{invoice.numero}</span>
+              <span>{formatBRL(5000)}</span>
+            </div>
+          ))}
+          <button type="button" className={styles.remessaPaymentLoadMoreButton}>
+            Carregar mais
+          </button>
+        </div>
+
+        <div className={styles.remessaPaymentPixCard}>
+          <p className={styles.remessaPaymentPixTitle}>Escaneie o QR code abaixo ou copie a chave abaixo</p>
+          <div className={styles.remessaPaymentPixKeyRow}>
+            <div className={styles.remessaPaymentPixKeyValue}>{REMESSA_PIX_KEY}</div>
+            <button type="button" className={styles.remessaPaymentPixCopyButton} onClick={handleCopyPixKey}>
+              <Copy size={16} />
+              {copied ? "Copiado!" : "Copiar chave"}
+            </button>
+          </div>
+          <div className={styles.remessaPaymentDivider} />
+          <img
+            src={REMESSA_QR_CODE_IMAGE_URL}
+            alt="QR code da remessa"
+            className={styles.remessaPaymentQrCode}
+          />
+        </div>
+
+        <div className={styles.remessaPaymentSecurity}>
+          <div className={styles.remessaPaymentSecurityTitle}>
+            <Lock size={16} color="#5352ed" />
+            <span>Plataforma segura.</span>
+          </div>
+          <p className={styles.remessaPaymentSecuritySubtitle}>
+            Voce paga com confianca e seu parceiro PJ recebe com agilidade.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function NotasFiscaisPage() {
-  const [activeTab, setActiveTab] = React.useState<"visao" | "notas">("visao");
+  const [activeTab, setActiveTab] = React.useState<ActiveTab>("visao");
   const [isFilterOpen, setIsFilterOpen] = React.useState(false);
+  const [selectedInvoice, setSelectedInvoice] = React.useState<Invoice | null>(null);
+  const [isRemessaInfoOpen, setIsRemessaInfoOpen] = React.useState(false);
+  const [isCreateRemessaOpen, setIsCreateRemessaOpen] = React.useState(false);
+  const [createdRemessa, setCreatedRemessa] = React.useState<CreatedRemessa | null>(null);
 
   const summaryCards = [
     { label: "Emitida (a pagar)",       value: "R$ 350.000,00" },
@@ -260,20 +912,43 @@ export default function NotasFiscaisPage() {
       <div className={styles.contentWrapper}>
         {/* Tab bar */}
         <div className={styles.tabBar}>
-          <button
-            className={`${styles.tabBtn} ${activeTab === "visao" ? styles.tabBtnActive : ""}`}
-            onClick={() => setActiveTab("visao")}
-          >
-            <PieChart size={20} />
-            VISÃO GERAL
-          </button>
-          <button
-            className={`${styles.tabBtn} ${activeTab === "notas" ? styles.tabBtnActive : ""}`}
-            onClick={() => setActiveTab("notas")}
-          >
-            <FileText size={20} />
-            NOTAS FISCAIS
-          </button>
+          <div className={styles.tabBarTabs}>
+            <button
+              className={`${styles.tabBtn} ${activeTab === "visao" ? styles.tabBtnActive : ""}`}
+              onClick={() => setActiveTab("visao")}
+            >
+              <PieChart size={20} />
+              VISÃO GERAL
+            </button>
+            <button
+              className={`${styles.tabBtn} ${activeTab === "notas" ? styles.tabBtnActive : ""}`}
+              onClick={() => setActiveTab("notas")}
+            >
+              <FileText size={20} />
+              NOTAS FISCAIS
+            </button>
+          </div>
+
+          {activeTab === "notas" && (
+            <div className={styles.tabBarActions}>
+              <button
+                type="button"
+                className={styles.tooltipIconButton}
+                onClick={() => setIsRemessaInfoOpen(true)}
+                aria-label="Abrir informações sobre remessa de pagamento"
+              >
+                <Info size={28} color="#527ca5" />
+              </button>
+              <button
+                type="button"
+                className={styles.createRemessaButton}
+                onClick={() => setIsCreateRemessaOpen(true)}
+              >
+                <Plus size={20} />
+                CRIAR REMESSA DE PAGAMENTO
+              </button>
+            </div>
+          )}
         </div>
 
         {activeTab === "visao" ? (
@@ -356,7 +1031,11 @@ export default function NotasFiscaisPage() {
               {/* Header */}
               <div className={styles.tableHeader}>
                 <div className={styles.thCheck}>
-                  <input type="checkbox" className={styles.checkbox} />
+                  <input
+                    type="checkbox"
+                    className={styles.checkbox}
+                    onClick={(event) => event.stopPropagation()}
+                  />
                 </div>
                 <div className={styles.thText}>Nº da NF</div>
                 <div className={styles.thText}>Nome</div>
@@ -375,9 +1054,17 @@ export default function NotasFiscaisPage() {
                   const visibleCats = inv.categorias.slice(0, 1);
                   const extraCount = inv.categorias.length - 1;
                   return (
-                    <div key={inv.id} className={styles.tableRow}>
+                    <div
+                      key={inv.id}
+                      className={styles.tableRow}
+                      onClick={() => setSelectedInvoice(inv)}
+                    >
                       <div className={styles.tdCheck}>
-                        <input type="checkbox" className={styles.checkbox} />
+                        <input
+                          type="checkbox"
+                          className={styles.checkbox}
+                          onClick={(event) => event.stopPropagation()}
+                        />
                       </div>
                       <div className={styles.tdTitle}>{inv.numero}</div>
                       <div className={styles.tdName}>{inv.nome}</div>
@@ -405,7 +1092,31 @@ export default function NotasFiscaisPage() {
         )}
       </div>
 
-      <FilterSheet isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)} />
+      <FilterSheet
+        isOpen={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+      />
+      <InvoiceDetailsModal
+        invoice={selectedInvoice}
+        onClose={() => setSelectedInvoice(null)}
+      />
+      <RemessaInfoModal
+        isOpen={isRemessaInfoOpen}
+        onClose={() => setIsRemessaInfoOpen(false)}
+      />
+      <CreateRemessaModal
+        isOpen={isCreateRemessaOpen}
+        onClose={() => setIsCreateRemessaOpen(false)}
+        onSubmit={(remessa) => {
+          setIsCreateRemessaOpen(false);
+          setCreatedRemessa(remessa);
+        }}
+        invoices={invoices}
+      />
+      <RemessaPaymentModal
+        remessa={createdRemessa}
+        onClose={() => setCreatedRemessa(null)}
+      />
     </div>
   );
 }
