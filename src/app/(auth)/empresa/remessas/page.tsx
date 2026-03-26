@@ -186,10 +186,23 @@ function RemessaPaymentModal({
   onClose: () => void;
 }) {
   const [copied, setCopied] = React.useState(false);
+  const copiedTimeoutRef = React.useRef<number | null>(null);
+
+  React.useEffect(() => {
+    return () => {
+      if (copiedTimeoutRef.current) {
+        window.clearTimeout(copiedTimeoutRef.current);
+      }
+    };
+  }, []);
 
   React.useEffect(() => {
     if (!remessa) {
       setCopied(false);
+      if (copiedTimeoutRef.current) {
+        window.clearTimeout(copiedTimeoutRef.current);
+        copiedTimeoutRef.current = null;
+      }
     }
   }, [remessa]);
 
@@ -201,7 +214,13 @@ function RemessaPaymentModal({
     try {
       await navigator.clipboard.writeText(REMESSA_PIX_KEY);
       setCopied(true);
-      window.setTimeout(() => setCopied(false), 1800);
+      if (copiedTimeoutRef.current) {
+        window.clearTimeout(copiedTimeoutRef.current);
+      }
+      copiedTimeoutRef.current = window.setTimeout(() => {
+        setCopied(false);
+        copiedTimeoutRef.current = null;
+      }, 1800);
     } catch {
       setCopied(false);
     }
@@ -312,6 +331,8 @@ function FilterSelect({
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
+    if (!isOpen) return;
+
     function onDocumentMouseDown(event: MouseEvent) {
       if (!wrapperRef.current?.contains(event.target as Node)) {
         setIsOpen(false);
@@ -330,7 +351,7 @@ function FilterSelect({
       document.removeEventListener("mousedown", onDocumentMouseDown);
       document.removeEventListener("keydown", onDocumentKeyDown);
     };
-  }, []);
+  }, [isOpen]);
 
   const selectedLabel = options.find((option) => option.value === value)?.label ?? "Todos";
 
@@ -496,8 +517,12 @@ export default function RemessasPage() {
   const [openPopoverId, setOpenPopoverId] = React.useState<string | null>(null);
   const [selectedRemessa, setSelectedRemessa] = React.useState<Remessa | null>(null);
   const [selectedPaymentRemessa, setSelectedPaymentRemessa] = React.useState<Remessa | null>(null);
+  const hasGlobalOverlayOpen =
+    openPopoverId !== null || selectedRemessa !== null || selectedPaymentRemessa !== null;
 
   React.useEffect(() => {
+    if (!hasGlobalOverlayOpen) return;
+
     function onDocumentMouseDown(event: MouseEvent) {
       const target = event.target;
 
@@ -526,11 +551,11 @@ export default function RemessasPage() {
       document.removeEventListener("mousedown", onDocumentMouseDown);
       document.removeEventListener("keydown", onDocumentKeyDown);
     };
-  }, []);
+  }, [hasGlobalOverlayOpen]);
 
   return (
     <div className={styles.container}>
-      <TopHeaderBar title="Remessas" hasNotifications={true} />
+      <TopHeaderBar title="Remessas" hasNotifications={false} />
 
       <div className={styles.contentWrapper}>
         <div className={styles.mainCard}>
@@ -558,10 +583,8 @@ export default function RemessasPage() {
 
             <div className={styles.tableBody}>
               {remessas.map((remessa, index) => {
-                const rowId = `${remessa.id}-${index}`;
-
                 return (
-                  <div key={rowId} className={`${styles.tableRow} ${index === remessas.length - 1 ? styles.tableRowLast : ""}`}>
+                  <div key={remessa.id} className={`${styles.tableRow} ${index === remessas.length - 1 ? styles.tableRowLast : ""}`}>
                     <div className={styles.idCell}>{remessa.id}</div>
                     <div className={styles.textCell}>{remessa.dataEmissao}</div>
                     <div className={styles.textCell}>{remessa.dataVencimento}</div>
@@ -575,13 +598,13 @@ export default function RemessasPage() {
                         <button
                           type="button"
                           aria-label="Ações da remessa"
-                          className={`${styles.moreButton} ${openPopoverId === rowId ? styles.moreButtonActive : ""}`}
-                          onClick={() => setOpenPopoverId((current) => (current === rowId ? null : rowId))}
+                          className={`${styles.moreButton} ${openPopoverId === remessa.id ? styles.moreButtonActive : ""}`}
+                          onClick={() => setOpenPopoverId((current) => (current === remessa.id ? null : remessa.id))}
                         >
                           <MoreVertical size={16} />
                         </button>
 
-                        {openPopoverId === rowId && (
+                        {openPopoverId === remessa.id && (
                           <div className={styles.popover}>
                             <button
                               type="button"

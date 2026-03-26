@@ -559,7 +559,7 @@ export default function ConfiguracoesEmpresaPage() {
 
   return (
     <div className={styles.container}>
-      <TopHeaderBar title={"Configura\u00e7\u00f5es"} hasNotifications={true} />
+      <TopHeaderBar title={"Configura\u00e7\u00f5es"} hasNotifications={false} />
 
       <div className={styles.contentWrapper}>
         <div className={styles.topControls}>

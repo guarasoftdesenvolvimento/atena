@@ -18,7 +18,8 @@ import {
   Users as UsersIcon,
   FileText as FileIcon,
   ClipboardList as NotasIcon,
-  Truck as RemessasIcon
+  Truck as RemessasIcon,
+  type LucideIcon,
 } from "lucide-react";
 
 
@@ -32,7 +33,7 @@ function StatCard({
   info = false,
 }: {
   bg: string;
-  icon: any;
+  icon: LucideIcon;
   circleColor: string;
   value: string;
   title: string;

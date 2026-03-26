@@ -6,7 +6,27 @@ import { Search, Filter, Info, ChevronRight, Bell, Building2, ChevronDown, ListF
 import styles from "./contratos.module.css";
 import TopHeaderBar from "../components/TopHeaderBar";
 
-const contracts = [
+type ContractStatus = "ativo" | "inativo";
+type CategoryColor = "Green" | "Orange" | "Purple" | "Red" | "Yellow" | "Plus";
+type ContractCategory = { name: string; color: CategoryColor };
+type ContractRow = {
+  id: number;
+  partnerName: string;
+  modelo: string;
+  verificado: boolean;
+  categorias: ContractCategory[];
+  vigencia: string;
+  status: ContractStatus;
+};
+type ModeloRow = {
+  id: number;
+  modelo: string;
+  verificado: boolean;
+  criadoEm: string;
+  atualizadoEm: string;
+};
+
+const contracts: ContractRow[] = [
   {
     id: 1,
     partnerName: "Felipe Alves dos Santos",
@@ -54,7 +74,7 @@ const contracts = [
   }
 ];
 
-const modelos = [
+const modelos: ModeloRow[] = [
   {
     id: 1,
     modelo: "CONTRATO PRESTAÇÃO GERAL",
@@ -459,6 +479,7 @@ function EditorSheet({ isOpen, onClose, title }: EditorSheetProps) {
   const [contratoOpen, setContratoOpen] = React.useState(false);
   const [pastedVariables, setPastedVariables] = React.useState<Set<string>>(new Set());
   const [copiedTag, setCopiedTag] = React.useState<string | null>(null);
+  const copiedTimeoutRef = React.useRef<number | null>(null);
   const editorRef = React.useRef<HTMLDivElement>(null);
 
   const total = REQUIRED_VARIABLES.length;
@@ -478,8 +499,22 @@ function EditorSheet({ isOpen, onClose, title }: EditorSheetProps) {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     setCopiedTag(text);
-    setTimeout(() => setCopiedTag(null), 1500);
+    if (copiedTimeoutRef.current) {
+      window.clearTimeout(copiedTimeoutRef.current);
+    }
+    copiedTimeoutRef.current = window.setTimeout(() => {
+      setCopiedTag(null);
+      copiedTimeoutRef.current = null;
+    }, 1500);
   };
+
+  React.useEffect(() => {
+    return () => {
+      if (copiedTimeoutRef.current) {
+        window.clearTimeout(copiedTimeoutRef.current);
+      }
+    };
+  }, []);
 
   if (!isOpen) return null;
 
@@ -768,21 +803,13 @@ function TutorialModal({ isOpen, onClose, onWatch }: TutorialModalProps) {
 export default function ContratosPage() {
   const [isFilterOpen, setIsFilterOpen] = React.useState(false);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [isContratoFormOpen, setIsContratoFormOpen] = React.useState(false);
-  const [isAditivoFormOpen, setIsAditivoFormOpen] = React.useState(false);
   const [isTutorialOpen, setIsTutorialOpen] = React.useState(false);
   const [isEditorOpen, setIsEditorOpen] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState<"CONTRATOS" | "MODELOS">("CONTRATOS");
 
-  const handleNewModelNext = (type: "CONTRATO" | "ADITIVO") => {
+  const handleNewModelNext = (_type: "CONTRATO" | "ADITIVO") => {
     setIsModalOpen(false);
     setIsTutorialOpen(true);
-  };
-
-  const handleBackToSelection = () => {
-    setIsContratoFormOpen(false);
-    setIsAditivoFormOpen(false);
-    setIsModalOpen(true);
   };
 
   const handleWatchTutorial = () => {
@@ -793,7 +820,7 @@ export default function ContratosPage() {
   return (
     <div className={styles.container}>
       {/* Header Adaptado para Empresa */}
-      <TopHeaderBar title="Contratos" hasNotifications={true} />
+      <TopHeaderBar title="Contratos" hasNotifications={false} />
 
       <div className={styles.contentWrapper}>
         <div className={styles.toolbarRow}>
@@ -874,8 +901,8 @@ export default function ContratosPage() {
                       )}
                     </div>
                     <div className={styles.categoriesList}>
-                      {contract.categorias.map((cat, idx) => (
-                        <span key={idx} className={cat.color === 'Plus' ? styles.catPlus : `${styles.categoryTag} ${cat.color === 'Green' ? styles.catGreen :
+                      {contract.categorias.map((cat) => (
+                        <span key={`${contract.id}-${cat.name}-${cat.color}`} className={cat.color === 'Plus' ? styles.catPlus : `${styles.categoryTag} ${cat.color === 'Green' ? styles.catGreen :
                             cat.color === 'Orange' ? styles.catOrange :
                               cat.color === 'Purple' ? styles.catPurple :
                                 cat.color === 'Red' ? styles.catRed :

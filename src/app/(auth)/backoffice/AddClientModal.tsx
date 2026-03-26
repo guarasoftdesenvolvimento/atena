@@ -410,13 +410,13 @@ export default function AddClientModal({
         <div className={styles.content}>
           <div className={styles.stepperWrap}>
             <div className={styles.stepper}>
-              {[0, 1, 2].map((idx) => (
+              {([0, 1, 2] as const).map((idx) => (
                 <div
-                  key={idx}
+                  key={`step-${idx + 1}`}
                   className={styles.stepBar}
                   style={{
-                    width: `${segmentWidth(idx as 0 | 1 | 2)}px`,
-                    background: segmentColor(idx as 0 | 1 | 2),
+                    width: `${segmentWidth(idx)}px`,
+                    background: segmentColor(idx),
                   }}
                 />
               ))}
@@ -459,4 +459,3 @@ export default function AddClientModal({
     </div>
   );
 }
-

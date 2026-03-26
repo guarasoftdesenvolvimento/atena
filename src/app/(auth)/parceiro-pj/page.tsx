@@ -236,12 +236,13 @@ const contractSigners = [
 ];
 
 const contractAddenda = [
-  { code: "14578", sentDate: "24/05/2025" },
-  { code: "14599", sentDate: "24/05/2025" },
-  { code: "14599", sentDate: "24/05/2025" },
+  { id: "addendum-14578", code: "14578", sentDate: "24/05/2025" },
+  { id: "addendum-14599-a", code: "14599", sentDate: "24/05/2025" },
+  { id: "addendum-14599-b", code: "14599", sentDate: "24/05/2025" },
 ] as const;
 
 type InvoiceItem = {
+  id: string;
   code: string;
   issuedAt: string;
   contractCode: string;
@@ -249,38 +250,43 @@ type InvoiceItem = {
 };
 
 const invoiceItems: InvoiceItem[] = [
-  { code: "NF4321", issuedAt: "12/04/2025", contractCode: "14578", paymentProof: "comprovante4321.pdf" },
-  { code: "NF4321", issuedAt: "12/04/2025", contractCode: "14578" },
-  { code: "NF4321", issuedAt: "12/04/2025", contractCode: "14578" },
-  { code: "NF4321", issuedAt: "12/04/2025", contractCode: "14578" },
-  { code: "NF4321", issuedAt: "12/04/2025", contractCode: "14578" },
-  { code: "NF4321", issuedAt: "12/04/2025", contractCode: "14578" },
-  { code: "NF4321", issuedAt: "12/04/2025", contractCode: "14578" },
+  { id: "invoice-4321-a", code: "NF4321", issuedAt: "12/04/2025", contractCode: "14578", paymentProof: "comprovante4321.pdf" },
+  { id: "invoice-4321-b", code: "NF4321", issuedAt: "12/04/2025", contractCode: "14578" },
+  { id: "invoice-4321-c", code: "NF4321", issuedAt: "12/04/2025", contractCode: "14578" },
+  { id: "invoice-4321-d", code: "NF4321", issuedAt: "12/04/2025", contractCode: "14578" },
+  { id: "invoice-4321-e", code: "NF4321", issuedAt: "12/04/2025", contractCode: "14578" },
+  { id: "invoice-4321-f", code: "NF4321", issuedAt: "12/04/2025", contractCode: "14578" },
+  { id: "invoice-4321-g", code: "NF4321", issuedAt: "12/04/2025", contractCode: "14578" },
 ];
 
 const notificationItems = [
   {
+    id: "notification-important",
     title: "Aviso importante",
     message:
       "Mantenha seus dados de contato atualizado, você receberá notificações, contratos para assinatura e afins por esses contatos",
     timestamp: "24/05/2025 às 16:42",
   },
   {
+    id: "notification-01-a",
     title: "Notificação 01",
     message: "Mantenha seus dados de contato atualizado",
     timestamp: "24/05/2025 às 16:42",
   },
   {
+    id: "notification-pending-contract",
     title: "Contrato pendente",
     message: "Mantenha seus dados de contato atualizado, você receberá notificações, contratos.",
     timestamp: "24/05/2025 às 16:42",
   },
   {
+    id: "notification-01-b",
     title: "Notificação 01",
     message: "Mantenha seus dados de contato atualizado",
     timestamp: "24/05/2025 às 16:42",
   },
   {
+    id: "notification-01-c",
     title: "Notificação 01",
     message: "Mantenha seus dados de contato atualizado",
     timestamp: "24/05/2025 às 16:42",
@@ -290,12 +296,24 @@ const notificationItems = [
 const formatDateToBR = (date: Date) =>
   `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
 
+const fallbackContractItem: ContractItem = {
+  code: "",
+  detailCode: "",
+  status: "active",
+  title: "",
+  startDate: "",
+  endDate: "",
+  amount: "",
+  sentDate: "",
+};
+
 export default function ParceiroPJPage() {
   const assets = figmaAssets.login;
+  const firstContractCode = contractItems[0]?.detailCode ?? "";
   const [step, setStep] = React.useState<OnboardingStep>("company_data");
   const [confirmed, setConfirmed] = React.useState(true);
   const [selectedContractCode, setSelectedContractCode] = React.useState<string>(
-    contractItems[0].detailCode,
+    firstContractCode,
   );
   const [openAddendaIndexes, setOpenAddendaIndexes] = React.useState<number[]>([0]);
   const [openInvoiceIndexes, setOpenInvoiceIndexes] = React.useState<number[]>([0, 1]);
@@ -308,7 +326,7 @@ export default function ParceiroPJPage() {
   const [uploadedInvoiceFileName, setUploadedInvoiceFileName] = React.useState("");
   const [emitInvoiceAmount, setEmitInvoiceAmount] = React.useState("");
   const [emitInvoiceContractCode, setEmitInvoiceContractCode] = React.useState(
-    contractItems[0].detailCode,
+    firstContractCode,
   );
   const uploadInvoiceInputRef = React.useRef<HTMLInputElement>(null);
   const activeNavItemId: NavItemId | null = (() => {
@@ -332,7 +350,8 @@ export default function ParceiroPJPage() {
   })();
   const selectedContract =
     contractItems.find((contract) => contract.detailCode === selectedContractCode) ??
-    contractItems[0];
+    contractItems[0] ??
+    fallbackContractItem;
 
   const handleQuickAccessClick = (itemId: (typeof quickAccessItems)[number]["id"]) => {
     if (itemId === "contracts") {
@@ -403,7 +422,7 @@ export default function ParceiroPJPage() {
     setInvoiceFlowMode("emit");
     setUploadedInvoiceFileName("");
     setEmitInvoiceAmount("");
-    setEmitInvoiceContractCode(contractItems[0].detailCode);
+    setEmitInvoiceContractCode(firstContractCode);
     setIsEmitInvoiceModalOpen(true);
   };
 
@@ -438,6 +457,7 @@ export default function ParceiroPJPage() {
 
     if (invoiceFlowMode === "emit") {
       const createdInvoice: InvoiceItem = {
+        id: `invoice-created-${invoiceItems.length + 1}`,
         code: `NF${String(invoiceItems.length + 1).padStart(4, "0")}`,
         issuedAt: formatDateToBR(new Date()),
         contractCode: emitInvoiceContractCode,
@@ -531,7 +551,7 @@ export default function ParceiroPJPage() {
                 const invoiceProof = invoice.paymentProof ?? uiText.noPaymentProof;
 
                 return (
-                  <article key={`${invoice.code}-${index}`} className={styles.invoiceCard}>
+                  <article key={invoice.id} className={styles.invoiceCard}>
                     <header
                       className={`${styles.invoiceCardHeader} ${
                         isOpen ? styles.invoiceCardHeaderOpen : styles.invoiceCardHeaderClosed
@@ -874,8 +894,8 @@ export default function ParceiroPJPage() {
           </header>
 
           <section className={styles.notificationsList}>
-            {notificationItems.map((notification, index) => (
-              <article key={`${notification.title}-${index}`} className={styles.notificationCard}>
+            {notificationItems.map((notification) => (
+              <article key={notification.id} className={styles.notificationCard}>
                 <h2>{notification.title}</h2>
                 <p>{notification.message}</p>
                 <span>
@@ -1022,7 +1042,7 @@ export default function ParceiroPJPage() {
 
               <div className={styles.detailAddendaList}>
                 {contractAddenda.map((addendum, index) => (
-                  <div key={`${addendum.code}-${index}`} className={styles.detailSubCard}>
+                  <div key={addendum.id} className={styles.detailSubCard}>
                     <div className={styles.detailDocHeaderRow}>
                       <div className={styles.detailDocHeader}>
                         <strong>
@@ -1248,8 +1268,8 @@ export default function ParceiroPJPage() {
                   <div className={styles.profileFieldGroup}>
                     <span>{uiText.cnaesSecundarios}</span>
                     <div className={styles.profileChipRow}>
-                      {firstAccessCompanyData.cnaesSecundarios.map((cnae, index) => (
-                        <span key={`${cnae}-${index}`} className={styles.profileChip}>
+                      {firstAccessCompanyData.cnaesSecundarios.map((cnae) => (
+                        <span key={cnae} className={styles.profileChip}>
                           {cnae}
                         </span>
                       ))}

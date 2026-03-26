@@ -7,7 +7,21 @@ import { Search, Plus, Filter, Info, ChevronRight, Bell, Building2, ChevronDown,
 import backofficeStyles from "../../backoffice/backoffice.module.css";
 import styles from "./parceiros.module.css";
 
-const partners = [
+type PartnerRisk = "regular" | "em risco" | "irregular";
+type PartnerStatus = "ativo" | "inativo";
+type PartnerCategoryColor = "Green" | "Orange" | "Purple" | "Red" | "Yellow" | "Plus";
+type PartnerCategory = { name: string; color: PartnerCategoryColor };
+type PartnerRow = {
+  id: number;
+  name: string;
+  cnpj: string;
+  cadastro: string;
+  risco: PartnerRisk;
+  status: PartnerStatus;
+  categorias: PartnerCategory[];
+};
+
+const partners: PartnerRow[] = [
   {
     id: 1,
     name: "Felipe Alves dos Santos",
@@ -592,9 +606,9 @@ export default function ParceirosPage() {
                 <div className={`${styles.tdText} ${styles.tdName}`}>{partner.name}</div>
                 <div className={styles.tdText}>{partner.cnpj}</div>
                 <div className={styles.tdText}>{partner.cadastro}</div>
-                <div className={styles.categoriesList}>
-                  {partner.categorias.map((cat, idx) => (
-                    <span key={idx} className={cat.color === 'Plus' ? styles.catPlus : `${styles.categoryTag} ${
+                  <div className={styles.categoriesList}>
+                  {partner.categorias.map((cat) => (
+                    <span key={`${partner.id}-${cat.name}-${cat.color}`} className={cat.color === 'Plus' ? styles.catPlus : `${styles.categoryTag} ${
                       cat.color === 'Green' ? styles.catGreen :
                       cat.color === 'Orange' ? styles.catOrange :
                       cat.color === 'Purple' ? styles.catPurple :

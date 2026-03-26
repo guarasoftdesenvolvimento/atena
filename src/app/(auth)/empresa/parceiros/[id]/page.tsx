@@ -409,7 +409,20 @@ function ContractModal({ isOpen, onClose, type }: { isOpen: boolean; onClose: ()
   );
 }
 
-export default function PartnerDetailsPage() {
+export default function PartnerDetailsPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = React.use(params);
+  const partnerId = (() => {
+    try {
+      return decodeURIComponent(id);
+    } catch {
+      return id;
+    }
+  })();
+
   const [activeTab, setActiveTab] = React.useState("Dados gerais");
   const [isEditContactOpen, setIsEditContactOpen] = React.useState(false);
   const [isEditBankingOpen, setIsEditBankingOpen] = React.useState(false);
@@ -421,7 +434,7 @@ export default function PartnerDetailsPage() {
   const [modalType, setModalType] = React.useState<"contrato" | "aditivo">("contrato");
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-partner-id={partnerId}>
       {/* Header Identico ao da listagem */}
       <TopHeaderBar title="Parceiros PJ" hasNotifications={false} />
 

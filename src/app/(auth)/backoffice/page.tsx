@@ -3,7 +3,8 @@ import {
   Users, 
   FileText, 
   ClipboardList, 
-  BarChart2 
+  BarChart2,
+  type LucideIcon,
 } from "lucide-react";
 
 
@@ -16,7 +17,7 @@ function StatCard({
   footer,
 }: {
   bg: string;
-  icon: any;
+  icon: LucideIcon;
   circleColor: string;
   value: string;
   title: string;
@@ -102,4 +103,3 @@ export default function BackofficePage() {
     </>
   );
 }
-

@@ -27,7 +27,9 @@ import styles from "./notas-fiscais.module.css";
 
 // ─── Mock data ────────────────────────────────────────────────────────────────
 
-const STATUS_COLORS: Record<string, string> = {
+type InvoiceStatus = "emitida" | "agendada" | "analise" | "paga" | "expirada" | "cancelada";
+
+const STATUS_COLORS: Record<InvoiceStatus, string> = {
   emitida: "#af52de",
   agendada: "#f5a623",
   analise: "#f5a623",
@@ -36,7 +38,7 @@ const STATUS_COLORS: Record<string, string> = {
   cancelada: "#d22020",
 };
 
-const STATUS_LABELS: Record<string, string> = {
+const STATUS_LABELS: Record<InvoiceStatus, string> = {
   emitida: "Emitida (a pagar)",
   agendada: "Agendada para pagamento",
   analise: "Pagamento em análise",
@@ -61,7 +63,7 @@ const DONUT_DATA = [
   { key: "paga", pct: 10 },
   { key: "expirada", pct: 10 },
   { key: "cancelada", pct: 10 },
-];
+] as const satisfies ReadonlyArray<{ key: InvoiceStatus; pct: number }>;
 
 const BAR_DATA = [
   { label: "1", emitida: 45000, agendada: 30000, analise: 8000, paga: 20000, expirada: 12000, cancelada: 10000 },
@@ -78,7 +80,7 @@ type Invoice = {
   nome: string;
   dataEmissao: string;
   categorias: Array<{ label: string; cor: string }>;
-  status: string;
+  status: InvoiceStatus;
 };
 
 const invoices: Invoice[] = [
@@ -104,14 +106,17 @@ function DonutChart({ data }: { data: typeof DONUT_DATA }) {
   const circ = 2 * Math.PI * radius;
   const cx = size / 2;
   const cy = size / 2;
-  let offset = 0;
+  const segments = data.map((seg, index) => {
+    const dash = (seg.pct / 100) * circ;
+    const previousDashTotal = data
+      .slice(0, index)
+      .reduce((acc, current) => acc + (current.pct / 100) * circ, 0);
+    return { seg, dash, gap: circ - dash, offset: previousDashTotal };
+  });
   return (
     <div style={{ position: "relative", width: size, height: size }}>
       <svg width={size} height={size} style={{ transform: "rotate(-90deg)" }}>
-        {data.map((seg) => {
-          const dash = (seg.pct / 100) * circ;
-          const gap = circ - dash;
-          const el = (
+        {segments.map(({ seg, dash, gap, offset }) => (
             <circle
               key={seg.key}
               cx={cx} cy={cy} r={radius}
@@ -121,10 +126,7 @@ function DonutChart({ data }: { data: typeof DONUT_DATA }) {
               strokeDasharray={`${dash} ${gap}`}
               strokeDashoffset={-offset}
             />
-          );
-          offset += dash;
-          return el;
-        })}
+        ))}
         <circle cx={cx} cy={cy} r={radius - strokeWidth / 2 + 2} fill="#ffffff" />
       </svg>
       <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", fontFamily: '"Inter",sans-serif', fontWeight: 700, fontSize: 22, color: "#3d3e41" }}>
@@ -142,7 +144,7 @@ function BarChart({ data }: { data: typeof BAR_DATA }) {
   const maxVal = 60000;
   const yTicks = [0, 15000, 30000, 45000, 60000];
   const barGroupW = chartW / data.length;
-  const keys: Array<keyof typeof data[0]> = ["emitida", "agendada", "analise", "paga", "expirada", "cancelada"];
+  const keys: InvoiceStatus[] = ["emitida", "agendada", "analise", "paga", "expirada", "cancelada"];
   const barW = Math.max(6, barGroupW / keys.length - 1);
   return (
     <svg width={W} height={H} style={{ overflow: "visible" }}>
@@ -165,7 +167,7 @@ function BarChart({ data }: { data: typeof BAR_DATA }) {
               const val = group[k] as number;
               const barH = (val / maxVal) * chartH;
               return (
-                <rect key={k as string} x={groupX + ki * (barW + 1)} y={padT + chartH - barH} width={barW} height={barH} rx={2} fill={STATUS_COLORS[k as string]} />
+                <rect key={k} x={groupX + ki * (barW + 1)} y={padT + chartH - barH} width={barW} height={barH} rx={2} fill={STATUS_COLORS[k]} />
               );
             })}
             <text x={groupX + barGroupW / 2} y={H - 4} textAnchor="middle" fontSize={7.5} fill="#8f9092" fontFamily="Inter, sans-serif">
@@ -205,8 +207,8 @@ function CategoryBadge({ label, cor }: { label: string; cor: string }) {
 
 // ─── Status badge ─────────────────────────────────────────────────────────────
 
-function StatusBadge({ status }: { status: string }) {
-  const map: Record<string, { label: string; bg: string; color: string }> = {
+function StatusBadge({ status }: { status: InvoiceStatus }) {
+  const map: Record<InvoiceStatus, { label: string; bg: string; color: string }> = {
     emitida:   { label: "Recebida (a pagar)",       bg: "#f0dbff", color: "#7c3aed" },
     agendada:  { label: "Agendada para pagamento",  bg: "#fef9c3", color: "#92400e" },
     analise:   { label: "Pagamento em análise",     bg: "#fef3c7", color: "#b45309" },
@@ -214,7 +216,7 @@ function StatusBadge({ status }: { status: string }) {
     expirada:  { label: "Expirada (não paga)",      bg: "#fee2e2", color: "#991b1b" },
     cancelada: { label: "Cancelada",                bg: "#fee2e2", color: "#991b1b" },
   };
-  const s = map[status] ?? { label: status, bg: "#e9eef5", color: "#345070" };
+  const s = map[status];
   return (
     <span className={styles.statusBadge} style={{ backgroundColor: s.bg, color: s.color }}>
       {s.label}
@@ -267,6 +269,8 @@ function FilterSelect({
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
+    if (!isOpen) return;
+
     function onDocumentMouseDown(event: MouseEvent) {
       if (!wrapperRef.current?.contains(event.target as Node)) {
         setIsOpen(false);
@@ -285,7 +289,7 @@ function FilterSelect({
       document.removeEventListener("mousedown", onDocumentMouseDown);
       document.removeEventListener("keydown", onDocumentKeyDown);
     };
-  }, []);
+  }, [isOpen]);
 
   const selectedLabel = options.find((option) => option.value === value)?.label ?? "Todos";
 
@@ -780,10 +784,23 @@ function RemessaPaymentModal({
   onClose: () => void;
 }) {
   const [copied, setCopied] = React.useState(false);
+  const copiedTimeoutRef = React.useRef<number | null>(null);
+
+  React.useEffect(() => {
+    return () => {
+      if (copiedTimeoutRef.current) {
+        window.clearTimeout(copiedTimeoutRef.current);
+      }
+    };
+  }, []);
 
   React.useEffect(() => {
     if (!remessa) {
       setCopied(false);
+      if (copiedTimeoutRef.current) {
+        window.clearTimeout(copiedTimeoutRef.current);
+        copiedTimeoutRef.current = null;
+      }
     }
   }, [remessa]);
 
@@ -793,7 +810,13 @@ function RemessaPaymentModal({
     try {
       await navigator.clipboard.writeText(REMESSA_PIX_KEY);
       setCopied(true);
-      window.setTimeout(() => setCopied(false), 1800);
+      if (copiedTimeoutRef.current) {
+        window.clearTimeout(copiedTimeoutRef.current);
+      }
+      copiedTimeoutRef.current = window.setTimeout(() => {
+        setCopied(false);
+        copiedTimeoutRef.current = null;
+      }, 1800);
     } catch {
       setCopied(false);
     }
@@ -908,7 +931,7 @@ export default function NotasFiscaisPage() {
 
   return (
     <div className={styles.container}>
-      <TopHeaderBar title="Notas Fiscais" hasNotifications={true} />
+      <TopHeaderBar title="Notas Fiscais" hasNotifications={false} />
 
       <div className={styles.contentWrapper}>
         {/* Tab bar */}
@@ -1001,7 +1024,7 @@ export default function NotasFiscaisPage() {
                   <BarChart data={BAR_DATA} />
                 </div>
                 <div className={styles.barLegend}>
-                  {Object.entries(STATUS_LABELS).map(([key, label], i) => (
+                  {(Object.entries(STATUS_LABELS) as Array<[InvoiceStatus, string]>).map(([key, label], i) => (
                     <div key={key} className={styles.barLegendItem}>
                       <div className={styles.legendDot} style={{ backgroundColor: STATUS_COLORS[key] }} />
                       <span className={styles.legendLabel}>{`${i + 1} – ${label}`}</span>

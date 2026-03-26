@@ -8,7 +8,7 @@ const SUPPORT_ILLUSTRATION_IMAGE_URL = "https://www.figma.com/api/mcp/asset/d0c3
 export default function SuporteEmpresaPage() {
   return (
     <div className={styles.container}>
-      <TopHeaderBar title="Suporte" hasNotifications={true} />
+      <TopHeaderBar title="Suporte" hasNotifications={false} />
 
       <div className={styles.contentWrapper}>
         <div className={styles.supportCard}>
