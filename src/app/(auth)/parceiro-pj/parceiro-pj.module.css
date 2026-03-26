@@ -1,0 +1,2001 @@
+.page {
+  min-height: 100vh;
+  background: var(--atena-surface-soft);
+}
+
+.content {
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 16px 32px;
+}
+
+.brand {
+  display: flex;
+  justify-content: center;
+}
+
+.brandRow {
+  width: 115.266px;
+  display: flex;
+  align-items: center;
+}
+
+.brandIcon {
+  width: 25.7px;
+  height: 25.7px;
+}
+
+.brandIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.brandWordmark {
+  font-family: "Poppins", var(--atena-font-inter);
+  font-size: 26.41px;
+  letter-spacing: -1.3205px;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #3a3a3f;
+}
+
+.card {
+  background: var(--atena-surface);
+  border-radius: 16px;
+  box-shadow: var(--atena-shadow-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardBody {
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hero {
+  width: 79.5px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stepBar {
+  width: 60px;
+  height: 5px;
+  border-radius: 12px;
+  background: var(--atena-primary-600);
+  margin-bottom: 10px;
+}
+
+.introTitle {
+  font-size: var(--atena-title-medium-size);
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--atena-secondary-600);
+}
+
+.introSubtitle {
+  margin: 0;
+  font-size: var(--atena-body-small-size);
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 500;
+  color: var(--atena-neutral-200);
+}
+
+.infoPanel {
+  background: var(--atena-secondary-100);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fieldLabel {
+  font-size: var(--atena-body-small-size);
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+  color: var(--atena-neutral-200);
+}
+
+.fieldValue {
+  font-size: var(--atena-body-medium-size);
+  line-height: 1.5;
+  letter-spacing: 0.21px;
+  font-weight: 600;
+  color: var(--atena-neutral-300);
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 27px;
+  padding: 2px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--atena-secondary-400);
+  font-size: var(--atena-body-medium-size);
+  line-height: 1.5;
+  letter-spacing: 0.21px;
+  font-weight: 600;
+  color: var(--atena-secondary-600);
+}
+
+.confirmRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.confirmInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.confirmIndicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--atena-secondary-400);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.confirmIndicatorChecked {
+  border-color: var(--atena-secondary-400);
+}
+
+.confirmDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--atena-secondary-400);
+}
+
+.confirmText {
+  font-size: var(--atena-body-medium-size);
+  line-height: 1.5;
+  letter-spacing: 0.21px;
+  font-weight: 400;
+  color: var(--atena-neutral-300);
+}
+
+.successBody {
+  padding: 50px 40px;
+  gap: 36px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.successHero {
+  width: 220px;
+  height: 189px;
+  object-fit: contain;
+}
+
+.successCopy {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.successTitle {
+  margin: 0;
+  font-size: var(--atena-title-medium-size);
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--atena-secondary-600);
+}
+
+.successSubtitle {
+  margin: 0;
+  font-size: var(--atena-body-small-size);
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 500;
+  color: var(--atena-neutral-200);
+}
+
+.cardFooter {
+  border-top: 1px solid var(--atena-primary-100);
+  padding: 20px;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
+}
+
+.nextButton {
+  width: 100%;
+  height: 46px;
+  border: none;
+  border-radius: 8px;
+  background: var(--atena-primary-600);
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+  font-family: var(--atena-font-inter);
+  letter-spacing: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.accessButton {
+  width: auto;
+  min-width: 170px;
+  padding: 0 18px;
+  margin: 0 auto;
+  display: flex;
+}
+
+.nextButton:disabled {
+  background: var(--atena-primary-300);
+}
+
+.homeContent {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 16px 110px;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+.homeTopBar {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  height: 60px;
+  background: #ffffff;
+  box-shadow: 0 4px 7.3px rgba(0, 0, 0, 0.15);
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.homeGreeting {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--atena-secondary-600);
+}
+
+.quickAccessCard {
+  width: 100%;
+  margin-top: 8px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: var(--atena-shadow-card);
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.quickAccessTitle {
+  margin: 0 0 16px;
+  color: var(--atena-secondary-600);
+  font-size: 16px;
+  line-height: 1.2;
+  letter-spacing: 0.21px;
+  font-weight: 700;
+}
+
+.quickAccessGrid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2px;
+  align-items: start;
+}
+
+.quickAccessItem {
+  border: none;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 0;
+}
+
+.quickAccessIconWrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: 1px solid #effafd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quickAccessIconInner {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--atena-primary-200);
+  color: var(--atena-primary-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quickAccessLabel {
+  display: block;
+  width: 100%;
+  min-height: 34px;
+  color: var(--atena-secondary-600);
+  font-family: Nunito, var(--atena-font-inter);
+  font-size: 12px;
+  line-height: 1.2;
+  letter-spacing: 0.18px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.nfCtaSection {
+  width: 100%;
+  height: 168px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+.nfCtaTitle {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  color: var(--atena-secondary-600);
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.nfCtaButton {
+  width: 100%;
+  height: 46px;
+  border: none;
+  border-radius: 8px;
+  background: #00a991;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+  font-family: var(--atena-font-inter);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.careSection {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: var(--atena-shadow-card);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+.careTitle {
+  margin: 0;
+  color: var(--atena-secondary-600);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.21px;
+  font-weight: 700;
+}
+
+.careItem {
+  background: var(--atena-secondary-100);
+  border: 1px solid rgba(223, 232, 255, 0.5);
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.careImage {
+  width: 100px;
+  height: 60px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.careCopy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.careHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.careItemTitle {
+  margin: 0;
+  color: var(--atena-primary-600);
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.careArrow {
+  color: var(--atena-primary-600);
+  flex: 0 0 auto;
+}
+
+.careItemText {
+  margin: 0;
+  color: var(--atena-neutral-300);
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 400;
+}
+
+.supportContent {
+  gap: 24px;
+}
+
+.supportCard {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+.supportHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.supportHeaderIcon {
+  color: var(--atena-secondary-600);
+  display: inline-flex;
+}
+
+.supportHeader h2 {
+  margin: 0;
+  color: var(--atena-secondary-600);
+  font-size: 16px;
+  line-height: 1.2;
+  letter-spacing: 0;
+  font-weight: 700;
+}
+
+.supportPanel {
+  width: 100%;
+  background: var(--atena-surface-soft);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.supportPanelHeading {
+  margin: 0;
+  color: var(--atena-neutral-300);
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.supportInfoGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.supportInfoGroup span {
+  color: var(--atena-neutral-200);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.supportInfoGroup strong {
+  color: var(--atena-neutral-300);
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.supportWhatsappButton {
+  width: 100%;
+  min-height: 46px;
+  border: none;
+  border-radius: 8px;
+  background: var(--atena-success-400);
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 700;
+  font-family: var(--font-inter), var(--atena-font-inter);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 12px;
+}
+
+.supportIllustrationWrap {
+  width: 100%;
+  border: 1px solid rgba(223, 232, 255, 0.8);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.supportIllustration {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.notificationsList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.notificationCard {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-sizing: border-box;
+}
+
+.notificationCard h2 {
+  margin: 0;
+  color: var(--atena-neutral-400);
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.notificationCard p {
+  margin: 0;
+  color: var(--atena-neutral-200);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 500;
+}
+
+.notificationCard span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--atena-secondary-300);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.profileAccordionList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profileAccordionCard {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: var(--atena-shadow-card);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profileAccordionHeader {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.profileAccordionTitleRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profileAccordionIcon {
+  color: var(--atena-secondary-600);
+  display: inline-flex;
+}
+
+.profileAccordionTitleRow strong {
+  color: var(--atena-secondary-600);
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.profileAccordionChevron {
+  color: var(--atena-secondary-400);
+  transition: transform 0.2s ease;
+}
+
+.profileAccordionChevronOpen {
+  transform: rotate(180deg);
+}
+
+.profileAccordionBody {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profileFieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.profileFieldGroup span {
+  color: var(--atena-neutral-200);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.profileFieldGroup strong {
+  color: var(--atena-neutral-300);
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.profileFieldValueRow {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.profileEditButton {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 4px;
+  background: var(--atena-primary-100);
+  color: var(--atena-primary-400);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex: 0 0 auto;
+}
+
+.profileChipRow {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.profileChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 27px;
+  padding: 2px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--atena-secondary-400);
+  color: var(--atena-secondary-600);
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.contractsContent {
+  gap: 16px;
+}
+
+.contractsTopBar {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  height: 60px;
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  box-shadow: 0 4px 7.3px rgba(0, 0, 0, 0.05);
+}
+
+.contractsBackButton {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 999px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--atena-primary-600);
+  background: transparent;
+}
+
+.contractsHeading {
+  margin: 0;
+  color: var(--atena-secondary-800);
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.contractsList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contractCard {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: var(--atena-shadow-card);
+  overflow: hidden;
+}
+
+.contractCardAction {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.contractCardAction:focus {
+  outline: none;
+}
+
+.contractCardHeader {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--atena-secondary-200);
+}
+
+.contractCardTitle {
+  margin: 0;
+  color: var(--atena-secondary-600);
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.contractCardTitle span {
+  color: var(--atena-primary-600);
+}
+
+.contractCardBody {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contractType {
+  margin: 0;
+  color: var(--atena-neutral-300);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 700;
+}
+
+.contractStatusChip {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 500;
+}
+
+.contractStatusActive {
+  background: var(--atena-success-100);
+  color: var(--atena-success-600);
+}
+
+.contractStatusWaitingSignature {
+  background: var(--atena-warning-100);
+  color: var(--atena-warning-800);
+}
+
+.contractStatusExpired {
+  background: var(--atena-error-100);
+  color: var(--atena-error-600);
+}
+
+.contractDivider {
+  width: 100%;
+  height: 1px;
+  background: var(--atena-secondary-200);
+}
+
+.contractDatesRow {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.contractDateItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.contractDateLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--atena-neutral-300);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.contractDateValue {
+  color: var(--atena-neutral-300);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 700;
+}
+
+.contractAmountRow {
+  width: 100%;
+  background: var(--atena-secondary-200);
+  border-radius: 6px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.contractAmountLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--atena-neutral-300);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.contractAmountValue {
+  color: var(--atena-secondary-400);
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.contractSigned {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--atena-primary-400);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.contractSigned strong {
+  color: var(--atena-primary-400);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 700;
+}
+
+.contractPending {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--atena-neutral-100);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.contractDetailTitleWrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.contractBreadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--atena-primary-600);
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.contractDetailsStack {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detailCard {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: var(--atena-shadow-card);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.detailSectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detailSectionIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--atena-secondary-600);
+}
+
+.detailSectionHeader h2 {
+  margin: 0;
+  color: var(--atena-secondary-600);
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.detailBody {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.detailMetaRow {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.detailMetaBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detailMetaBlock span {
+  color: var(--atena-neutral-200);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.detailMetaBlock strong {
+  color: var(--atena-secondary-600);
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.detailMetaBlock strong em {
+  color: var(--atena-primary-600);
+  font-style: normal;
+}
+
+.detailMetaBlockRight {
+  align-items: flex-end;
+}
+
+.detailContractTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.detailContractTitle span {
+  color: var(--atena-neutral-200);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.detailContractTitle strong {
+  color: var(--atena-neutral-300);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0;
+  font-weight: 700;
+}
+
+.contractAmountRowDetail {
+  min-height: 36px;
+}
+
+.detailSubCard {
+  width: 100%;
+  background: var(--atena-secondary-100);
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detailDocHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.detailDocHeader strong {
+  color: var(--atena-secondary-600);
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.detailDocHeader strong em {
+  font-style: normal;
+  font-weight: 700;
+}
+
+.detailDocHeader span {
+  color: var(--atena-neutral-200);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.detailDocActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.detailDocActions button {
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+  padding: 0 6px;
+  min-height: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--atena-primary-400);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+  font-family: var(--font-inter), var(--atena-font-inter);
+}
+
+.detailSignatureBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detailSignatureBlock h3 {
+  margin: 0;
+  color: var(--atena-secondary-400);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 700;
+}
+
+.signatureList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.signatureItem {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid var(--atena-primary-100);
+  border-radius: 8px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.signaturePerson {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.signaturePerson strong {
+  color: var(--atena-neutral-400);
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.signaturePerson span {
+  color: var(--atena-neutral-200);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.signatureStatusChip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.signatureStatusSigned {
+  background: var(--atena-success-100);
+  color: var(--atena-success-600);
+}
+
+.signatureStatusPending {
+  background: var(--atena-warning-100);
+  color: var(--atena-warning-800);
+}
+
+.detailAddendaList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detailDocHeaderRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.addendumToggle {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--atena-primary-300);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.addendumToggleIcon {
+  transition: transform 0.2s ease;
+}
+
+.addendumToggleExpanded {
+  transform: rotate(180deg);
+}
+
+.invoiceActionRow {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.invoiceEmitButton {
+  min-height: 46px;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--atena-primary-600);
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+  font-family: var(--font-inter), var(--atena-font-inter);
+}
+
+.invoicePanel {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.invoicePanelHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.invoicePanelIcon {
+  display: inline-flex;
+  color: var(--atena-secondary-600);
+}
+
+.invoicePanelHeader h2 {
+  margin: 0;
+  color: var(--atena-secondary-600);
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.invoiceList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.invoiceCard {
+  width: 100%;
+  border: 1px solid var(--atena-primary-100);
+  border-radius: 12px;
+  background: var(--atena-secondary-100);
+  box-shadow: var(--atena-shadow-card);
+  overflow: hidden;
+}
+
+.invoiceCardHeader {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--atena-warning-100);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.invoiceCardMainAction {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.invoiceAccordionToggle {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 6px;
+  padding: 0;
+  background: transparent;
+  color: var(--atena-primary-300);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.invoiceCardHeaderOpen {
+  border-bottom: 1px solid var(--atena-secondary-200);
+  border-radius: 12px 12px 0 0;
+}
+
+.invoiceCardHeaderClosed {
+  border-radius: 12px;
+}
+
+.invoiceTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.invoiceTagIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--atena-warning-300);
+  color: var(--atena-warning-700);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.invoiceTag strong {
+  color: var(--atena-secondary-600);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  font-weight: 700;
+}
+
+.invoiceChevron {
+  color: var(--atena-primary-300);
+  transition: transform 0.2s ease;
+}
+
+.invoiceChevronOpen {
+  transform: rotate(0deg);
+}
+
+.invoiceChevronClosed {
+  transform: rotate(90deg);
+}
+
+.invoiceCardBody {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--atena-secondary-100);
+  cursor: pointer;
+}
+
+.invoiceInfoRow {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.invoiceInfoBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.invoiceInfoBlockRight {
+  align-items: flex-end;
+}
+
+.invoiceInfoLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--atena-neutral-200);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.invoiceInfoValue {
+  color: var(--atena-secondary-400);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 700;
+}
+
+.invoiceInfoContract {
+  color: var(--atena-secondary-600);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.invoiceProofLabel {
+  margin: 0;
+  color: var(--atena-neutral-400);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.invoiceProofFile {
+  width: 100%;
+  background: var(--atena-primary-100);
+  border-radius: 4px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--atena-primary-600);
+}
+
+.invoiceProofFile span {
+  color: var(--atena-primary-600);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 600;
+}
+
+.invoiceProofFileDisabled {
+  opacity: 0.3;
+}
+
+.emitInvoiceModalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(30, 41, 56, 0.35);
+  backdrop-filter: blur(1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.emitInvoiceModal {
+  width: min(100%, 380px);
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.emitInvoiceModalHeader {
+  width: 100%;
+  border-bottom: 1px solid var(--atena-primary-100);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.emitInvoiceModalTitleGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.emitInvoiceModalTitleIcon {
+  display: inline-flex;
+  color: var(--atena-secondary-600);
+}
+
+.emitInvoiceModalTitleGroup h2 {
+  margin: 0;
+  color: var(--atena-secondary-600);
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.emitInvoiceModalClose {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 4px;
+  background: var(--atena-primary-100);
+  color: var(--atena-primary-400);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.emitInvoiceModalBody {
+  width: 100%;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.emitInvoiceFormFields {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.emitInvoiceFieldGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.emitInvoiceFieldGroup span {
+  color: var(--atena-neutral-300);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 500;
+}
+
+.emitInvoiceFieldGroup input,
+.emitInvoiceFieldGroup select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--atena-primary-100);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #ffffff;
+  color: var(--atena-neutral-400);
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 500;
+  font-family: var(--font-inter), var(--atena-font-inter);
+}
+
+.emitInvoiceFieldGroup input::placeholder {
+  color: var(--atena-neutral-100);
+}
+
+.emitInvoiceModalHint {
+  margin: 0;
+  color: var(--atena-neutral-300);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.emitInvoiceModeList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.emitInvoiceModeButton {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--atena-primary-100);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #ffffff;
+  color: var(--atena-neutral-300);
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+}
+
+.emitInvoiceModeButtonActive {
+  border-color: var(--atena-primary-300);
+  background: #f5f7ff;
+}
+
+.emitInvoiceModeIndicator {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid var(--atena-primary-300);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.emitInvoiceModeIndicatorInner {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--atena-primary-600);
+}
+
+.emitInvoiceUploadWrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.emitInvoiceUploadInput {
+  display: none;
+}
+
+.emitInvoiceUploadButton {
+  width: 100%;
+  min-height: 40px;
+  border: 1px dashed var(--atena-primary-300);
+  border-radius: 8px;
+  background: var(--atena-secondary-100);
+  color: var(--atena-primary-600);
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 600;
+  font-family: var(--font-inter), var(--atena-font-inter);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+}
+
+.emitInvoiceUploadedFile {
+  margin: 0;
+  color: var(--atena-neutral-300);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.emitInvoiceUploadedFile span {
+  font-weight: 700;
+}
+
+.emitInvoiceModalFooter {
+  width: 100%;
+  border-top: 1px solid var(--atena-primary-100);
+  padding: 12px 16px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.emitInvoiceCancelButton {
+  border: none;
+  background: transparent;
+  color: var(--atena-neutral-300);
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.emitInvoiceConfirmButton {
+  min-height: 40px;
+  border: none;
+  border-radius: 8px;
+  background: var(--atena-primary-600);
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  font-family: var(--font-inter), var(--atena-font-inter);
+}
+
+.emitInvoiceConfirmButton:disabled {
+  background: var(--atena-primary-300);
+}
+
+.invoiceModalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(30, 41, 56, 0.35);
+  backdrop-filter: blur(1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.invoiceModal {
+  width: min(100%, 380px);
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.invoiceModalHeader {
+  width: 100%;
+  border-bottom: 1px solid var(--atena-primary-100);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.invoiceModalTitleGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.invoiceModalTitleIcon {
+  display: inline-flex;
+  color: var(--atena-secondary-600);
+}
+
+.invoiceModalTitleGroup h2 {
+  margin: 0;
+  color: var(--atena-secondary-600);
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.invoiceModalClose {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 4px;
+  background: var(--atena-primary-100);
+  color: var(--atena-primary-400);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.invoiceModalBody {
+  width: 100%;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.invoiceModalInfo {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.invoiceModalInfoBlock {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.invoiceModalInfoBlock span {
+  color: var(--atena-neutral-200);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.invoiceModalInfoBlock strong {
+  color: var(--atena-neutral-300);
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.invoiceModalPrimaryValue {
+  color: var(--atena-primary-600);
+  letter-spacing: 0.21px;
+  font-weight: 700;
+}
+
+.invoiceModalFileGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.invoiceModalFileGroup p {
+  margin: 0;
+  color: var(--atena-neutral-200);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+}
+
+.invoiceModalFileRow {
+  width: 100%;
+  background: var(--atena-secondary-100);
+  border-radius: 8px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.invoiceModalFileRow span {
+  color: var(--atena-neutral-400);
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+.invoiceModalActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.invoiceModalActions button {
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+  padding: 0 6px;
+  min-height: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--atena-primary-400);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18px;
+  font-weight: 400;
+  font-family: var(--font-inter), var(--atena-font-inter);
+}
+
+.floatingNav {
+  position: fixed;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  width: min(328px, calc(100% - 24px));
+  border-radius: 100px;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  background: rgba(45, 44, 167, 0.95);
+  border: 0.5px solid var(--atena-primary-400);
+  box-shadow: 0 4px 14px rgba(51, 81, 201, 0.2);
+  backdrop-filter: blur(6px);
+  z-index: 20;
+}
+
+.navItem {
+  border: none;
+  background: transparent;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  border-radius: 100px;
+  min-height: 44px;
+  padding: 4px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 4px;
+  font-family: var(--font-inter), var(--atena-font-inter);
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.navItem:focus {
+  outline: none;
+}
+
+.navItem:focus-visible {
+  outline: 2px solid var(--atena-primary-200);
+  outline-offset: 1px;
+}
+
+.navItem svg {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.navLabel {
+  display: block;
+  line-height: 1;
+}
+
+.navItemActive {
+  background: var(--atena-primary-200);
+  color: var(--atena-primary-700);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 80px;
+  justify-self: center;
+}

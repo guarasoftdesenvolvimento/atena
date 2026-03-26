@@ -2,7 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
-import { Search, Plus, Filter, Info, ChevronRight, Bell, Building2, ChevronDown, ChevronDown as ArrowDown, ListFilter, FolderRoot, X, CheckCircle2, AlertCircle, QrCode, FileSearch } from "lucide-react";
+import TopHeaderBar from "../components/TopHeaderBar";
+import { Search, Plus, Filter, Info, ChevronRight, Bell, Building2, ChevronDown, ListFilter, FolderRoot, X, CheckCircle2, AlertCircle, QrCode, FileSearch } from "lucide-react";
 import backofficeStyles from "../../backoffice/backoffice.module.css";
 import styles from "./parceiros.module.css";
 
@@ -186,6 +187,19 @@ function SuccessUpsellModal({ isOpen, onClose, onConsult }: { isOpen: boolean; o
 }
 
 function FilterSheet({ isOpen, onClose }: FilterSheetProps) {
+  const [statusFilter, setStatusFilter] = React.useState("todos");
+  const [categoryFilter, setCategoryFilter] = React.useState("todos");
+  const [riskFilter, setRiskFilter] = React.useState("todos");
+  const [startDate, setStartDate] = React.useState("2025-01-01");
+  const [endDate, setEndDate] = React.useState("2025-02-02");
+
+  const handleClear = () => {
+    setStatusFilter("todos");
+    setCategoryFilter("todos");
+    setRiskFilter("todos");
+    setStartDate("");
+    setEndDate("");
+  };
   return (
     <div className={`${styles.overlay} ${isOpen ? styles.overlayVisible : ''}`} onClick={onClose}>
       <div className={`${styles.sheet} ${isOpen ? styles.sheetVisible : ''}`} onClick={e => e.stopPropagation()}>
@@ -196,26 +210,45 @@ function FilterSheet({ isOpen, onClose }: FilterSheetProps) {
         <div className={styles.sheetBody}>
           <div className={styles.filterGroup}>
             <label className={styles.filterLabel}>Filtrar por status</label>
-            <div className={styles.inputField}>
-              <span>Todos</span>
-              <ArrowDown size={16} color="#737791" />
-            </div>
+            <select
+              className={`${styles.inputField} ${styles.selectControl}`}
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="todos">Todos</option>
+              <option value="ativo">Ativo</option>
+              <option value="inativo">Inativo</option>
+            </select>
           </div>
 
           <div className={styles.filterGroup}>
             <label className={styles.filterLabel}>Filtrar por categoria</label>
-            <div className={styles.inputField}>
-              <span>Todos</span>
-              <ArrowDown size={16} color="#737791" />
-            </div>
+            <select
+              className={`${styles.inputField} ${styles.selectControl}`}
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+            >
+              <option value="todos">Todos</option>
+              <option value="categoria-1">Categoria 1</option>
+              <option value="categoria-2">Categoria 2</option>
+              <option value="categoria-3">Categoria 3</option>
+              <option value="categoria-4">Categoria 4</option>
+              <option value="categoria-5">Categoria 5</option>
+            </select>
           </div>
 
           <div className={styles.filterGroup}>
             <label className={styles.filterLabel}>Filtrar por risco</label>
-            <div className={styles.inputField}>
-              <span>Todos</span>
-              <ArrowDown size={16} color="#737791" />
-            </div>
+            <select
+              className={`${styles.inputField} ${styles.selectControl}`}
+              value={riskFilter}
+              onChange={(e) => setRiskFilter(e.target.value)}
+            >
+              <option value="todos">Todos</option>
+              <option value="regular">Regular</option>
+              <option value="em-risco">Em risco</option>
+              <option value="irregular">Irregular</option>
+            </select>
           </div>
 
           <div className={styles.filterGroup}>
@@ -223,24 +256,36 @@ function FilterSheet({ isOpen, onClose }: FilterSheetProps) {
             <div className={styles.dateRangeRow}>
               <div style={{ flex: 1 }}>
                 <span className={styles.filterLabel} style={{ marginBottom: 4, display: 'block', color: '#8f9092' }}>De</span>
-                <div className={styles.inputField}>
-                  <span>01/01/2025</span>
-                  <ArrowDown size={16} color="#737791" />
-                </div>
+                <input
+                  type="date"
+                  className={styles.dateInput}
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                />
               </div>
               <div style={{ flex: 1 }}>
                 <span className={styles.filterLabel} style={{ marginBottom: 4, display: 'block', color: '#8f9092' }}>Até</span>
-                <div className={styles.inputField}>
-                  <span>02/02/2025</span>
-                  <ArrowDown size={16} color="#737791" />
-                </div>
+                <input
+                  type="date"
+                  className={styles.dateInput}
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
               </div>
             </div>
           </div>
         </div>
 
         <div className={styles.sheetFooter}>
-          <button className={styles.clearButton} onClick={onClose}>LIMPAR</button>
+          <button
+            className={styles.clearButton}
+            onClick={() => {
+              handleClear();
+              onClose();
+            }}
+          >
+            LIMPAR
+          </button>
           <button className={styles.applyButton} onClick={onClose}>
             <ListFilter size={20} />
             APLICAR FILTRO
@@ -490,34 +535,7 @@ export default function ParceirosPage() {
   return (
     <div className={styles.container}>
       {/* Header Adaptado para Empresa */}
-      <div className={backofficeStyles.topHeader}>
-        <div className={backofficeStyles.topTitle}>Parceiros PJ</div>
-        
-        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-          <div style={{ backgroundColor: '#e9eef5', padding: '8px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Bell size={24} color="#737791" />
-          </div>
-
-          <div style={{ 
-            display: 'flex', 
-            gap: '10px', 
-            alignItems: 'center', 
-            padding: '8px 12px', 
-            backgroundColor: '#ffffff', 
-            borderRadius: '16px',
-            boxShadow: '0px 20px 50px 0px rgba(55, 69, 87, 0.1)'
-          }}>
-            <div style={{ backgroundColor: '#e9eef5', padding: '10px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Building2 size={24} color="#527ca5" />
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontWeight: 600, fontSize: '16px', color: '#527ca5', lineHeight: 1.2 }}>Guarásoft</span>
-              <span style={{ fontSize: '11px', color: '#527ca5' }}>40.227.403/0001-92</span>
-            </div>
-            <ChevronDown size={20} color="#737791" />
-          </div>
-        </div>
-      </div>
+      <TopHeaderBar title="Parceiros PJ" hasNotifications={false} />
 
       <div className={styles.contentWrapper}>
         <div className={styles.toolbarRow}>
@@ -538,7 +556,7 @@ export default function ParceirosPage() {
           <div className={styles.cardTopRow}>
             <span className={styles.totalText}>14 Parceiros PJ</span>
             <button className={styles.filterButton} onClick={() => setIsFilterOpen(true)}>
-              <Filter size={24} color="#5352ed" />
+              <Filter size={20} color="#5352ed" />
               <span>FILTROS</span>
             </button>
           </div>
@@ -629,3 +647,4 @@ export default function ParceirosPage() {
     </div>
   );
 }
+

@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Search, X } from "lucide-react";
 import styles from "./AddAdditionalCnpjModal.module.css";
 import { useEscapeToClose, useLockBodyScroll } from "./useModalEffects";
@@ -33,7 +34,7 @@ export default function AddAdditionalCnpjModal({ open, onClose, onAdd }: AddAddi
     if (e.target === e.currentTarget) onClose();
   };
 
-  return (
+  const modal = (
     <div className={styles.overlay} onMouseDown={onBackdropMouseDown}>
       <div
         className={styles.modal}
@@ -99,5 +100,6 @@ export default function AddAdditionalCnpjModal({ open, onClose, onAdd }: AddAddi
       </div>
     </div>
   );
-}
 
+  return createPortal(modal, document.body);
+}

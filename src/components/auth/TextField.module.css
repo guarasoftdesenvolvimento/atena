@@ -50,6 +50,13 @@
   display: block;
 }
 
+.iconSvg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--atena-neutral-300);
+}
+
 .iconOverlayFrame {
   position: absolute;
   overflow: hidden;
@@ -89,10 +96,16 @@
   justify-content: center;
 }
 
+.rightIconButton {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
 .rightIcon img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   display: block;
 }
-

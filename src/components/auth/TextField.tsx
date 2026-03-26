@@ -7,10 +7,14 @@ export type TextFieldProps = {
   placeholder?: string;
   value?: string;
   onChange?: (value: string) => void;
+  leftIcon?: React.ReactNode;
   leftIconSrc?: string;
   leftIconOverlaySrc?: string;
   leftIconOverlayStyle?: React.CSSProperties;
+  rightIcon?: React.ReactNode;
   rightIconSrc?: string;
+  rightIconAriaLabel?: string;
+  onRightIconClick?: () => void;
 };
 
 export default function TextField({
@@ -19,19 +23,24 @@ export default function TextField({
   placeholder,
   value,
   onChange,
+  leftIcon,
   leftIconSrc,
   leftIconOverlaySrc,
   leftIconOverlayStyle,
+  rightIcon,
   rightIconSrc,
+  rightIconAriaLabel,
+  onRightIconClick,
 }: TextFieldProps) {
   return (
     <div className={styles.field}>
       <div className={styles.label}>{label}</div>
       <div className={styles.inputShell}>
-        {leftIconSrc ? (
+        {leftIcon || leftIconSrc ? (
           <span className={styles.icon}>
-            <img src={leftIconSrc} alt="" />
-            {leftIconOverlaySrc ? (
+            {leftIcon ? <span className={styles.iconSvg}>{leftIcon}</span> : null}
+            {leftIconSrc ? <img src={leftIconSrc} alt="" /> : null}
+            {leftIconOverlaySrc && !leftIcon ? (
               <span
                 className={styles.iconOverlayFrame}
                 style={leftIconOverlayStyle}
@@ -51,13 +60,25 @@ export default function TextField({
           autoComplete="off"
         />
 
-        {rightIconSrc ? (
-          <span className={styles.rightIcon}>
-            <img src={rightIconSrc} alt="" />
-          </span>
+        {rightIcon || rightIconSrc ? (
+          onRightIconClick ? (
+            <button
+              type="button"
+              className={`${styles.rightIcon} ${styles.rightIconButton}`}
+              onClick={onRightIconClick}
+              aria-label={rightIconAriaLabel ?? "Ação do campo"}
+            >
+              {rightIcon ? <span className={styles.iconSvg}>{rightIcon}</span> : null}
+              {rightIconSrc ? <img src={rightIconSrc} alt="" /> : null}
+            </button>
+          ) : (
+            <span className={styles.rightIcon}>
+              {rightIcon ? <span className={styles.iconSvg}>{rightIcon}</span> : null}
+              {rightIconSrc ? <img src={rightIconSrc} alt="" /> : null}
+            </span>
+          )
         ) : null}
       </div>
     </div>
   );
 }
-

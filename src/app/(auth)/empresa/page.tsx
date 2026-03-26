@@ -3,6 +3,7 @@
 import React from "react";
 import styles from "./empresa.module.css";
 import backofficeStyles from "../backoffice/backoffice.module.css";
+import TopHeaderBar from "./components/TopHeaderBar";
 import { 
   Bell, 
   Building2, 
@@ -71,24 +72,8 @@ function StatCard({
 export default function EmpresaPage() {
   return (
     <>
-      <div className={backofficeStyles.topHeader}>
-        <div className={backofficeStyles.topTitle}>Dashboard</div>
-        
-        <div className={styles.notifications}>
-            <Bell size={24} color="#737791" />
-        </div>
-
-        <div className={styles.companyBadge}>
-            <div className={styles.companyIconBox}>
-                <Building2 size={24} color="#527ca5" />
-            </div>
-            <div className={styles.companyInfo}>
-                <span className={styles.companyName}>Guarásoft</span>
-                <span className={styles.companyCnpj}>40.227.403/0001-92</span>
-            </div>
-            <ChevronDown size={20} color="#737791" />
-        </div>
-      </div>
+      {/* Header Adaptado para Empresa */}
+      <TopHeaderBar title="Dashboard" hasNotifications={false} />
 
       <div className={backofficeStyles.contentBg}>
         <div className={backofficeStyles.contentCard}>
