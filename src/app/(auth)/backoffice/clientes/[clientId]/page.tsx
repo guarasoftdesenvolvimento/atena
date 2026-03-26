@@ -12,12 +12,17 @@ import AddClientModal from "../../AddClientModal";
 import type { AdditionalClient } from "../../types";
 import { clientDetailsMock } from "../../mock/clients";
 
-export default function ClienteDetailsPage({ params }: { params: { clientId: string } }) {
+export default function ClienteDetailsPage({
+  params,
+}: {
+  params: Promise<{ clientId: string }>;
+}) {
+  const { clientId } = React.use(params);
   const decodedId = (() => {
     try {
-      return decodeURIComponent(params.clientId);
+      return decodeURIComponent(clientId);
     } catch {
-      return params.clientId;
+      return clientId;
     }
   })();
 
@@ -303,7 +308,7 @@ export default function ClienteDetailsPage({ params }: { params: { clientId: str
       </div>
 
       <ChangeAccessPlanModal
-        key={changePlanKey}
+        key={`change-plan-${changePlanKey}`}
         open={isChangePlanOpen}
         onClose={() => setIsChangePlanOpen(false)}
         initialCnpj={client.cnpj}
@@ -314,7 +319,7 @@ export default function ClienteDetailsPage({ params }: { params: { clientId: str
       />
 
       <AddClientModal
-        key={editClientKey}
+        key={`edit-client-${editClientKey}`}
         open={isEditClientOpen}
         onClose={() => setIsEditClientOpen(false)}
         mode="edit"
@@ -328,7 +333,7 @@ export default function ClienteDetailsPage({ params }: { params: { clientId: str
       />
 
       <AddAdditionalCnpjModal
-        key={addAdditionalCnpjKey}
+        key={`add-cnpj-${addAdditionalCnpjKey}`}
         open={isAddAdditionalCnpjOpen}
         onClose={() => setIsAddAdditionalCnpjOpen(false)}
         onAdd={(additionalCnpj) => {
@@ -355,5 +360,4 @@ export default function ClienteDetailsPage({ params }: { params: { clientId: str
     </>
   );
 }
-
 

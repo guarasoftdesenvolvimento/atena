@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronDown, Plus, Search } from "lucide-react";
 import backofficeStyles from "../backoffice.module.css";
@@ -23,9 +23,25 @@ export default function ClientesBackofficePage() {
 
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<"Todos" | ClientStatus>("Todos");
+  const [statusMenuOpen, setStatusMenuOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalKey, setModalKey] = useState(0);
+  const statusMenuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (!statusMenuRef.current) return;
+      if (!statusMenuRef.current.contains(event.target as Node)) {
+        setStatusMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const q = query.trim().toLowerCase();
   const filtered = clients.filter((c) => {
@@ -84,21 +100,40 @@ export default function ClientesBackofficePage() {
             <div className={styles.totalText}>{totalLabel}</div>
             <div className={styles.filterGroup}>
               <div className={styles.filterLabel}>Filtrar por status</div>
-              <div className={styles.selectWrap}>
-                <select
-                  className={styles.select}
-                  value={status}
-                  onChange={(e) => {
-                    setStatus(e.target.value as "Todos" | ClientStatus);
-                    setPage(1);
-                  }}
+              <div className={styles.selectWrap} ref={statusMenuRef}>
+                <button
+                  type="button"
+                  className={styles.selectButton}
+                  onClick={() => setStatusMenuOpen((open) => !open)}
+                  aria-haspopup="listbox"
+                  aria-expanded={statusMenuOpen}
                 >
-                  <option value="Todos">Todos</option>
-                  <option value="Ativo">Ativo</option>
-                  <option value="Inativo">Inativo</option>
-                  <option value="Inadimplente">Inadimplente</option>
-                </select>
-                <ChevronDown size={18} color="#5c5e60" />
+                  <span className={styles.selectButtonLabel}>{status}</span>
+                  <ChevronDown size={18} color="#5c5e60" />
+                </button>
+
+                {statusMenuOpen ? (
+                  <div className={styles.selectMenu} role="listbox" aria-label="Filtrar por status">
+                    {(["Todos", "Ativo", "Inativo", "Inadimplente"] as const).map((option) => (
+                      <button
+                        key={option}
+                        type="button"
+                        role="option"
+                        aria-selected={status === option}
+                        className={`${styles.selectOption} ${
+                          status === option ? styles.selectOptionActive : ""
+                        }`}
+                        onClick={() => {
+                          setStatus(option);
+                          setPage(1);
+                          setStatusMenuOpen(false);
+                        }}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
@@ -134,7 +169,7 @@ export default function ClientesBackofficePage() {
                   <div className={styles.tdText}>{c.cnpj}</div>
                   <div className={styles.tdText}>{c.contato}</div>
                   <div className={styles.tdText}>{c.licencas}</div>
-                  <div className={styles.tdText}>
+                  <div className={`${styles.tdText} ${styles.statusCell}`}>
                     <span className={`${styles.pill} ${statusToPillClass(c.status)}`}>{c.status}</span>
                   </div>
                   <div className={styles.actions}>
@@ -172,4 +207,3 @@ export default function ClientesBackofficePage() {
     </>
   );
 }
-

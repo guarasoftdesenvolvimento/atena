@@ -98,6 +98,18 @@ interface FilterSheetProps {
 }
 
 function FilterSheet({ isOpen, onClose }: FilterSheetProps) {
+  const [statusFilter, setStatusFilter] = React.useState("todos");
+  const [categoryFilter, setCategoryFilter] = React.useState("todos");
+  const [startDate, setStartDate] = React.useState("2025-01-01");
+  const [endDate, setEndDate] = React.useState("2025-02-02");
+
+  const handleClear = () => {
+    setStatusFilter("todos");
+    setCategoryFilter("todos");
+    setStartDate("");
+    setEndDate("");
+  };
+
   return (
     <div className={`${styles.overlay} ${isOpen ? styles.overlayVisible : ''}`} onClick={onClose}>
       <div className={`${styles.sheet} ${isOpen ? styles.sheetVisible : ''}`} onClick={e => e.stopPropagation()}>
@@ -108,18 +120,31 @@ function FilterSheet({ isOpen, onClose }: FilterSheetProps) {
         <div className={styles.sheetBody}>
           <div className={styles.filterGroup}>
             <label className={styles.filterLabel}>Filtrar por status</label>
-            <div className={styles.inputField}>
-              <span>Todos</span>
-              <ChevronDown size={20} color="#737791" />
-            </div>
+            <select
+              className={`${styles.inputField} ${styles.selectControl}`}
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="todos">Todos</option>
+              <option value="ativo">Ativo</option>
+              <option value="inativo">Inativo</option>
+            </select>
           </div>
 
           <div className={styles.filterGroup}>
             <label className={styles.filterLabel}>Filtrar por categoria</label>
-            <div className={styles.inputField}>
-              <span>Todos</span>
-              <ChevronDown size={20} color="#737791" />
-            </div>
+            <select
+              className={`${styles.inputField} ${styles.selectControl}`}
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+            >
+              <option value="todos">Todos</option>
+              <option value="categoria-1">Categoria 1</option>
+              <option value="categoria-2">Categoria 2</option>
+              <option value="categoria-3">Categoria 3</option>
+              <option value="categoria-4">Categoria 4</option>
+              <option value="categoria-5">Categoria 5</option>
+            </select>
           </div>
 
           <div className={styles.filterGroup}>
@@ -127,24 +152,36 @@ function FilterSheet({ isOpen, onClose }: FilterSheetProps) {
             <div className={styles.dateRangeRow}>
               <div style={{ flex: 1 }}>
                 <span className={styles.filterLabel} style={{ marginBottom: 4, display: 'block', color: '#8f9092' }}>De</span>
-                <div className={styles.inputField}>
-                  <span>01/01/2025</span>
-                  <ChevronDown size={20} color="#737791" />
-                </div>
+                <input
+                  type="date"
+                  className={styles.dateInput}
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                />
               </div>
               <div style={{ flex: 1 }}>
                 <span className={styles.filterLabel} style={{ marginBottom: 4, display: 'block', color: '#8f9092' }}>Até</span>
-                <div className={styles.inputField}>
-                  <span>02/02/2025</span>
-                  <ChevronDown size={20} color="#737791" />
-                </div>
+                <input
+                  type="date"
+                  className={styles.dateInput}
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
               </div>
             </div>
           </div>
         </div>
 
         <div className={styles.sheetFooter}>
-          <button className={styles.clearButton} onClick={onClose}>LIMPAR</button>
+          <button
+            className={styles.clearButton}
+            onClick={() => {
+              handleClear();
+              onClose();
+            }}
+          >
+            LIMPAR
+          </button>
           <button className={styles.applyButton} onClick={onClose}>
             <ListFilter size={20} />
             APLICAR FILTRO

@@ -5,6 +5,7 @@ import {
   Filter,
   Info,
   ChevronDown,
+  Calendar,
   ListFilter,
   MoreVertical,
   ExternalLink,
@@ -402,7 +403,7 @@ function FilterDatePicker({
       }}
     >
       <span className={styles.fieldValue}>{value ? formatDateForDisplay(value) : "Selecione"}</span>
-      <ChevronDown size={20} color="#c1c1c1" />
+      <Calendar size={20} color="#737791" />
       <input
         ref={inputRef}
         type="date"

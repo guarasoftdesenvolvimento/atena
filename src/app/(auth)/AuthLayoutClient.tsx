@@ -21,27 +21,11 @@ const permaLogoIcon = figmaAssets.login.logoIconSrc;
 
 function Logo() {
   return (
-    <div style={{ display: "flex", gap: 7, alignItems: "center" }} aria-label="Atena">
-      <div style={{ width: 40, height: 40, position: "relative" }}>
-        <img
-          src={permaLogoIcon}
-          alt=""
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }}
-        />
+    <div className={styles.logoWrap} aria-label="Atena">
+      <div className={styles.logoIcon}>
+        <img src={permaLogoIcon} alt="" />
       </div>
-      <div
-        style={{
-          fontFamily: "Poppins, var(--atena-font-inter)",
-          fontWeight: 700,
-          fontSize: 41.273,
-          letterSpacing: -2.0637,
-          lineHeight: 1.2,
-          color: "#3a3a3f",
-          whiteSpace: "nowrap",
-        }}
-      >
-        Atena
-      </div>
+      <div className={styles.logoWordmark}>Atena</div>
     </div>
   );
 }
@@ -142,4 +126,3 @@ export default function AuthLayoutClient({ children }: { children: React.ReactNo
     </div>
   );
 }
-

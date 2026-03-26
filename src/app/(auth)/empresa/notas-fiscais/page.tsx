@@ -12,6 +12,7 @@ import {
   Search,
   ListFilter,
   ChevronDown,
+  Calendar,
   CloudDownload,
   CloudUpload,
   CheckCircle2,
@@ -359,7 +360,7 @@ function FilterDatePicker({
       }}
     >
       <span className={styles.fieldValue}>{value ? formatDateForDisplay(value) : "Selecione"}</span>
-      <ChevronDown size={20} color="#737791" />
+      <Calendar size={20} color="#737791" />
       <input
         ref={inputRef}
         type="date"

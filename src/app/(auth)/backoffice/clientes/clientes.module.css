@@ -84,7 +84,6 @@
   flex-direction: column;
   gap: 16px;
   width: 100%;
-  max-width: 960px;
 }
 
 .cardTopRow {
@@ -121,27 +120,71 @@
   border: 1px solid #e9eef5;
   border-radius: 8px;
   height: 40px;
-  padding: 0 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
   min-width: 140px;
   position: relative;
 }
 
-.select {
+.selectButton {
+  width: 100%;
+  height: 100%;
   border: none;
   background: transparent;
-  flex: 1;
-  height: 100%;
-  outline: none;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.selectButtonLabel {
   font-family: "Inter", sans-serif;
   font-size: 14px;
   font-weight: 400;
   color: #3d3e41;
   letter-spacing: 0.21px;
-  appearance: none;
+  line-height: 1.2;
+}
+
+.selectMenu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #c1c1c1;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(30, 41, 56, 0.12);
+}
+
+.selectOption {
+  width: 100%;
+  border: none;
+  background: #ffffff;
+  padding: 8px 12px;
+  text-align: left;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #1e2938;
+  line-height: 1.5;
   cursor: pointer;
+}
+
+.selectOption:hover {
+  background-color: #eef3ff;
+}
+
+.selectOptionActive {
+  background-color: #2668c9;
+  color: #ffffff;
+}
+
+.selectOptionActive:hover {
+  background-color: #2668c9;
+  color: #ffffff;
 }
 
 .tableHeader {
@@ -149,7 +192,7 @@
   padding: 4px 8px;
   border-radius: 4px;
   display: grid;
-  grid-template-columns: 240px 1fr 1fr 140px 80px 60px;
+  grid-template-columns: 240px minmax(140px, 1fr) minmax(140px, 1fr) 120px 120px 56px;
   gap: 16px;
   align-items: center;
   width: 100%;
@@ -174,7 +217,7 @@
   border-bottom: 1px solid rgba(193, 193, 193, 0.5);
   padding: 10px 8px;
   display: grid;
-  grid-template-columns: 240px 1fr 1fr 140px 80px 60px;
+  grid-template-columns: 240px minmax(140px, 1fr) minmax(140px, 1fr) 120px 120px 56px;
   gap: 16px;
   align-items: center;
   width: 100%;
@@ -205,6 +248,11 @@
 .tdName {
   font-weight: 700;
   color: #5c5e60;
+}
+
+.statusCell {
+  overflow: visible;
+  text-overflow: clip;
 }
 
 .pill {

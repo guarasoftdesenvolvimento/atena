@@ -50,12 +50,12 @@
   background-color: #ffffff;
   border: 1px solid #e9eef5;
   border-radius: 8px;
-  height: 48px;
-  padding: 0 16px;
+  height: 40px;
+  padding: 0 12px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  width: 380px;
+  gap: 10px;
+  width: 320px;
   transition: border-color 0.2s;
 }
 
@@ -68,14 +68,18 @@
   border: none;
   background: transparent;
   flex: 1;
-  font-size: 16px;
-  color: #1e2938;
+  height: 100%;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #3d3e41;
+  letter-spacing: 0.21px;
   outline: none;
 }
 
 .searchInput::placeholder {
-  color: #1e2938;
-  opacity: 0.3;
+  color: #c1c1c1;
+  opacity: 1;
 }
 
 .tableCard {
@@ -390,6 +394,39 @@
 
 .inputField:hover {
   border-color: #5352ed;
+}
+
+.selectControl {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23737791' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.dateInput {
+  background-color: #ffffff;
+  border: 1px solid #e9eef5;
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 12px;
+  width: 100%;
+  font-size: 14px;
+  color: #3d3e41;
+  cursor: pointer;
+  outline: none;
+  font-family: "Inter", sans-serif;
+}
+
+.dateInput:hover,
+.dateInput:focus {
+  border-color: #5352ed;
+}
+
+.dateInput::-webkit-calendar-picker-indicator {
+  cursor: pointer;
 }
 
 .dateRangeRow {

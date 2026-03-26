@@ -391,6 +391,19 @@
   border-bottom: 1px solid rgba(193, 193, 193, 0.5);
 }
 
+.usersTableRowClickable {
+  cursor: pointer;
+}
+
+.usersTableRowClickable:hover {
+  background: #f9fbff;
+}
+
+.usersTableRowClickable:focus-visible {
+  outline: 2px solid #a2b7ff;
+  outline-offset: -2px;
+}
+
 .userStatusActive {
   color: #1ba785;
   font-weight: 700;
@@ -502,6 +515,27 @@
 .modalInput:hover,
 .modalInput:focus {
   border-color: #5352ed;
+}
+
+.modalSelectShell {
+  position: relative;
+}
+
+.modalSelectInput {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.modalSelectIcon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8f9092;
+  pointer-events: none;
 }
 
 .cnpjInputShell {

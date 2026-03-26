@@ -1,20 +1,48 @@
-"use client";
+﻿"use client";
 
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Link from "next/link";
+import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
 import AuthPageShell from "@/components/auth/AuthPageShell";
 import TextField from "@/components/auth/TextField";
 import PrimaryButton from "@/components/auth/PrimaryButton";
+import Toast from "@/components/feedback/Toast";
 import styles from "./login.module.css";
-import { login } from "@/lib/auth/api";
+import { login, requestPasswordReset } from "@/lib/auth/api";
 import { figmaAssets } from "@/lib/figmaAssets";
 
 const assets = figmaAssets.login;
 
 export default function LoginPage() {
+  const [mode, setMode] = useState<"login" | "forgot">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [forgotEmail, setForgotEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotToast, setForgotToast] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+
+  async function onSubmitLogin(e: FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    login({ email, password })
+      .catch(() => {
+        // Em seguida a gente pluga tratamento de erro real.
+      })
+      .finally(() => setLoading(false));
+  }
+
+  async function onSubmitForgotPassword(e: FormEvent) {
+    e.preventDefault();
+    setForgotLoading(true);
+    try {
+      await requestPasswordReset({ email: forgotEmail });
+      setForgotToast("Solicitação enviada com sucesso. Verifique seu e-mail para continuar.");
+    } finally {
+      setForgotLoading(false);
+    }
+  }
 
   return (
     <AuthPageShell
@@ -67,87 +95,106 @@ export default function LoginPage() {
       }
       card={
         <div className={styles.card}>
-          <div className={styles.cardHeader}>
-            <div className={styles.cardHeaderTitle}>Acessar</div>
+          {mode === "forgot" && forgotToast ? (
+            <div className={styles.toastWrap}>
+              <Toast variant="success" message={forgotToast} />
+            </div>
+          ) : null}
+
+          <div
+            className={`${styles.cardHeader} ${
+              mode === "forgot" ? styles.cardHeaderForgot : ""
+            }`}
+          >
+            {mode === "forgot" ? (
+              <div className={styles.backRow}>
+                <button
+                  type="button"
+                  className={styles.backButton}
+                  onClick={() => {
+                    setMode("login");
+                    setForgotToast(null);
+                  }}
+                >
+                  Voltar
+                </button>
+              </div>
+            ) : null}
+            <div className={styles.cardHeaderTitle}>
+              {mode === "forgot" ? "Recuperação de senha" : "Acessar"}
+            </div>
           </div>
 
-          <form
-            className={styles.form}
-            onSubmit={(e) => {
-              e.preventDefault();
-              // Mock do fluxo de login (API plugável depois)
-              setLoading(true);
-              login({ email, password })
-                .catch(() => {
-                  // Em seguida a gente pluga tratamento de erro real.
-                })
-                .finally(() => setLoading(false));
-            }}
-          >
-            <TextField
-              label="E-mail"
-              type="email"
-              placeholder="parceiropj@exemplo.com"
-              value={email}
-              onChange={setEmail}
-              leftIconSrc={assets.emailIconSrc}
-              leftIconOverlaySrc={assets.emailIconOverlaySrc}
-              leftIconOverlayStyle={{
-                position: "absolute",
-                top: "16.67%",
-                right: "8.33%",
-                bottom: "16.67%",
-                left: "8.33%",
-              }}
-              rightIconSrc={assets.dropdownIconSrc}
-            />
+          {mode === "login" ? (
+            <>
+              <form className={styles.form} onSubmit={onSubmitLogin}>
+                <TextField
+                  label="E-mail"
+                  type="email"
+                  placeholder="parceiropj@exemplo.com"
+                  value={email}
+                  onChange={setEmail}
+                  leftIcon={<Mail size={16} />}
+                />
 
-            <div>
-              <TextField
-                label="Senha"
-                type="password"
-                placeholder="*******"
-                value={password}
-                onChange={setPassword}
-                leftIconSrc={assets.passwordIconSrc}
-                leftIconOverlaySrc={assets.passwordIconOverlaySrc}
-                leftIconOverlayStyle={{
-                  position: "absolute",
-                  top: "4.17%",
-                  right: "16.67%",
-                  bottom: "8.33%",
-                  left: "16.67%",
-                }}
-                rightIconSrc={assets.dropdownIconSrc}
-              />
-              <div className={styles.passwordBottomRow}>
-                <Link href="/forgot-password" className={styles.forgotLink}>
-                  Esqueci minha senha
+                <div>
+                  <TextField
+                    label="Senha"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="*******"
+                    value={password}
+                    onChange={setPassword}
+                    leftIcon={<LockKeyhole size={16} />}
+                    rightIcon={showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    rightIconAriaLabel={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                    onRightIconClick={() => setShowPassword((prev) => !prev)}
+                  />
+                  <div className={styles.passwordBottomRow}>
+                    <button
+                      type="button"
+                      className={styles.forgotLink}
+                      onClick={() => {
+                        setForgotEmail(email);
+                        setForgotToast(null);
+                        setMode("forgot");
+                      }}
+                    >
+                      Esqueci minha senha
+                    </button>
+                  </div>
+                </div>
+
+                <PrimaryButton label="Acessar" type="submit" disabled={loading} />
+              </form>
+
+              <div className={styles.roleButtons} aria-label="Acesso por role">
+                <Link href="/backoffice/inicio" className={styles.roleButton}>
+                  Backoffice
+                </Link>
+                <Link href="/empresa" className={styles.roleButton}>
+                  Empresa
+                </Link>
+                <Link href="/parceiro-pj" className={styles.roleButton}>
+                  Parceiro PJ
                 </Link>
               </div>
-            </div>
+            </>
+          ) : (
+            <form className={styles.form} onSubmit={onSubmitForgotPassword}>
+              <TextField
+                label="E-mail"
+                type="email"
+                placeholder="parceiropj@exemplo.com"
+                value={forgotEmail}
+                onChange={setForgotEmail}
+                leftIcon={<Mail size={16} />}
+              />
 
-            <PrimaryButton
-              label="Acessar"
-              type="submit"
-              disabled={loading}
-            />
-          </form>
-
-          <div className={styles.roleButtons} aria-label="Acesso por role">
-            <Link href="/backoffice/inicio" className={styles.roleButton}>
-              Backoffice
-            </Link>
-            <Link href="/empresa" className={styles.roleButton}>
-              Empresa
-            </Link>
-            <Link href="/parceiro-pj" className={styles.roleButton}>
-              Parceiro PJ
-            </Link>
-          </div>
+              <PrimaryButton label="Enviar" type="submit" disabled={forgotLoading} />
+            </form>
+          )}
         </div>
       }
     />
   );
 }
-

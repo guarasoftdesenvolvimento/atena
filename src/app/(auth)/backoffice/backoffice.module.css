@@ -22,10 +22,41 @@
 }
 
 .sidebarLogoArea {
-  padding: 20px;
+  height: 80px;
+  padding: 0 20px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+}
+
+.logoWrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.logoIcon {
+  width: 25.7px;
+  height: 25.7px;
+  flex: 0 0 auto;
+}
+
+.logoIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.logoWordmark {
+  font-family: "Poppins", var(--atena-font-inter);
+  font-size: 26.41px;
+  letter-spacing: -1.3205px;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #3a3a3f;
+  white-space: nowrap;
 }
 
 .sidebarSeparator {
@@ -307,4 +338,3 @@
     gap: 16px;
   }
 }
-

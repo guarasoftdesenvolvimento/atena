@@ -20,7 +20,6 @@
   align-items: center;
   justify-content: flex-end;
   width: 100%;
-  max-width: 960px;
 }
 
 .searchBox {
@@ -84,6 +83,14 @@
 }
 
 .tableCard {
+  --partners-cols:
+    minmax(88px, 1.1fr)
+    minmax(220px, 2.4fr)
+    minmax(170px, 1.7fr)
+    minmax(120px, 1.3fr)
+    minmax(220px, 2.2fr)
+    minmax(96px, 1.1fr)
+    minmax(56px, 0.6fr);
   background-color: #ffffff;
   border-radius: 16px;
   padding: 16px;
@@ -91,7 +98,6 @@
   flex-direction: column;
   gap: 16px;
   width: 100%;
-  max-width: 960px;
 }
 
 .cardTopRow {
@@ -113,15 +119,15 @@
   border: 1px solid #5352ed;
   background: #ffffff;
   border-radius: 8px;
-  height: 38px;
-  padding: 0 12px;
-  display: flex;
+  height: 40px;
+  padding: 0 16px;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 14px;
   color: #5352ed;
 }
 
@@ -130,7 +136,7 @@
   padding: 4px 8px;
   border-radius: 4px;
   display: grid;
-  grid-template-columns: 80px 200px 140px 100px 1fr 80px 60px;
+  grid-template-columns: var(--partners-cols);
   gap: 16px;
   align-items: center;
   width: 100%;
@@ -158,7 +164,7 @@
   border-bottom: 1px solid rgba(193, 193, 193, 0.5);
   padding: 10px 8px;
   display: grid;
-  grid-template-columns: 80px 200px 140px 100px 1fr 80px 60px;
+  grid-template-columns: var(--partners-cols);
   gap: 16px;
   align-items: center;
   width: 100%;
@@ -361,6 +367,39 @@
 
 .inputField:hover {
   border-color: #5352ed;
+}
+
+.selectControl {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23737791' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.dateInput {
+  background-color: #ffffff;
+  border: 1px solid #e9eef5;
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 12px;
+  width: 100%;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #3d3e41;
+  cursor: pointer;
+  outline: none;
+}
+
+.dateInput:hover,
+.dateInput:focus {
+  border-color: #5352ed;
+}
+
+.dateInput::-webkit-calendar-picker-indicator {
+  cursor: pointer;
 }
 
 .dateRangeRow {

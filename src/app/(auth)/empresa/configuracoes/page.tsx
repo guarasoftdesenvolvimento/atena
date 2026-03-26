@@ -10,6 +10,7 @@ import {
   Pencil,
   Plus,
   UserRound,
+  UserRoundPlus,
   Users,
   FileText,
   X,
@@ -36,6 +37,18 @@ type ResponsibleData = {
   nome: string;
   whatsapp: string;
   email: string;
+};
+type SystemUser = {
+  id: number;
+  nome: string;
+  email: string;
+  perfil: string;
+  status: "Ativo" | "Inativo";
+};
+type SystemUserDraft = {
+  nome: string;
+  email: string;
+  perfil: string;
 };
 
 type AddAdditionalCnpjModalProps = {
@@ -90,11 +103,17 @@ const initialAdditionalCompanies: AdditionalCompany[] = [
 
 const categories = ["Tecnologia", "Desenvolvimento", "Design", "Financeiro", "Opera\u00e7\u00f5es"];
 
-const systemUsers = [
-  { nome: "Felipe Alves dos Santos", email: "contato@kalisoft.tech", perfil: "Administrador", status: "Ativo" },
-  { nome: "Mariana Costa", email: "mariana@kalisoft.tech", perfil: "Financeiro", status: "Ativo" },
-  { nome: "Rafael Souza", email: "rafael@kalisoft.tech", perfil: "Operador", status: "Inativo" },
+const initialSystemUsers: SystemUser[] = [
+  { id: 1, nome: "Felipe Alves dos Santos", email: "contato@kalisoft.tech", perfil: "Administrador", status: "Ativo" },
+  { id: 2, nome: "Mariana Costa", email: "mariana@kalisoft.tech", perfil: "Financeiro", status: "Ativo" },
+  { id: 3, nome: "Rafael Souza", email: "rafael@kalisoft.tech", perfil: "Operador", status: "Inativo" },
 ];
+const userRoleOptions = ["Administrador", "Financeiro", "Operador"];
+const emptySystemUserDraft: SystemUserDraft = {
+  nome: "",
+  email: "",
+  perfil: "Administrador",
+};
 
 const additionalCompanyPreview = {
   razaoSocial: "GUARASOFT APLICATIVOS - LTDA",
@@ -141,6 +160,7 @@ function EditResponsibleModal({
             <input
               className={styles.modalInput}
               type="text"
+              placeholder="Ex: Simara Zatesko"
               value={data.nome}
               onChange={(event) => onChange("nome", event.target.value)}
             />
@@ -161,6 +181,7 @@ function EditResponsibleModal({
             <input
               className={styles.modalInput}
               type="email"
+              placeholder="Ex: simara@guarasoft.com"
               value={data.email}
               onChange={(event) => onChange("email", event.target.value)}
             />
@@ -305,12 +326,110 @@ function AddAdditionalCnpjModal({ isOpen, onClose, onAdd }: AddAdditionalCnpjMod
   );
 }
 
+function SystemUserModal({
+  isOpen,
+  isEditing,
+  data,
+  onClose,
+  onSave,
+  onChange,
+}: {
+  isOpen: boolean;
+  isEditing: boolean;
+  data: SystemUserDraft;
+  onClose: () => void;
+  onSave: () => void;
+  onChange: (field: keyof SystemUserDraft, value: string) => void;
+}) {
+  if (!isOpen) return null;
+
+  return (
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modalContent} onClick={(event) => event.stopPropagation()}>
+        <div className={styles.editModalHeader}>
+          <div className={styles.headerTitleGroup}>
+            <UserRoundPlus size={24} />
+            <h2 className={styles.modalSectionTitle}>
+              {isEditing ? "Editar usu\u00e1rio do sistema" : "Novo usu\u00e1rio do sistema"}
+            </h2>
+          </div>
+
+          <button type="button" className={styles.closeContainer} onClick={onClose} aria-label="Fechar modal">
+            <X size={16} />
+          </button>
+        </div>
+
+        <div className={styles.editModalBody}>
+          <div className={styles.inputFieldGroup}>
+            <label className={styles.inputLabel}>{"Nome completo do respons\u00e1vel"}</label>
+            <input
+              className={styles.modalInput}
+              type="text"
+              placeholder="Ex: Simara Zatesko"
+              value={data.nome}
+              onChange={(event) => onChange("nome", event.target.value)}
+            />
+          </div>
+
+          <div className={styles.inputFieldGroup}>
+            <label className={styles.inputLabel}>Email</label>
+            <input
+              className={styles.modalInput}
+              type="email"
+              placeholder="Ex: simara@guarasoft.com"
+              value={data.email}
+              onChange={(event) => onChange("email", event.target.value)}
+            />
+          </div>
+
+          <div className={styles.inputFieldGroup}>
+            <label className={styles.inputLabel}>{"Fun\u00e7\u00e3o"}</label>
+            <div className={styles.modalSelectShell}>
+              <select
+                className={`${styles.modalInput} ${styles.modalSelectInput}`}
+                value={data.perfil}
+                onChange={(event) => onChange("perfil", event.target.value)}
+              >
+                {userRoleOptions.map((role) => (
+                  <option key={role} value={role}>
+                    {role}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={20} className={styles.modalSelectIcon} />
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.editModalFooter}>
+          <button type="button" className={styles.btnCancel} onClick={onClose}>
+            CANCELAR
+          </button>
+          <button
+            type="button"
+            className={styles.btnSave}
+            onClick={onSave}
+            disabled={!data.nome.trim() || !data.email.trim() || !data.perfil.trim()}
+          >
+            <CheckCircle2 size={20} />
+            SALVAR
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ConfiguracoesEmpresaPage() {
   const [activeTab, setActiveTab] = React.useState<ConfigTab>("dados");
   const [expandedAdditionalIndex, setExpandedAdditionalIndex] = React.useState<number>(0);
   const [additionalCompanies, setAdditionalCompanies] = React.useState<AdditionalCompany[]>(initialAdditionalCompanies);
   const [isAddAdditionalCnpjOpen, setIsAddAdditionalCnpjOpen] = React.useState(false);
   const [isEditResponsibleOpen, setIsEditResponsibleOpen] = React.useState(false);
+  const [systemUsers, setSystemUsers] = React.useState<SystemUser[]>(initialSystemUsers);
+  const [isSystemUserModalOpen, setIsSystemUserModalOpen] = React.useState(false);
+  const [selectedSystemUserId, setSelectedSystemUserId] = React.useState<number | null>(null);
+  const [systemUserDraft, setSystemUserDraft] = React.useState<SystemUserDraft>(emptySystemUserDraft);
   const [responsibleData, setResponsibleData] = React.useState<ResponsibleData>({
     nome: "Felipe Alves dos Santos",
     whatsapp: "47 99999-9999",
@@ -367,6 +486,77 @@ export default function ConfiguracoesEmpresaPage() {
     setExpandedAdditionalIndex(newIndex);
   };
 
+  const handleSystemUserDraftChange = (field: keyof SystemUserDraft, value: string) => {
+    setSystemUserDraft((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleCloseSystemUserModal = () => {
+    setIsSystemUserModalOpen(false);
+    setSelectedSystemUserId(null);
+    setSystemUserDraft(emptySystemUserDraft);
+  };
+
+  const handleOpenNewSystemUser = () => {
+    setSelectedSystemUserId(null);
+    setSystemUserDraft(emptySystemUserDraft);
+    setIsSystemUserModalOpen(true);
+  };
+
+  const handleOpenEditSystemUser = (user: SystemUser) => {
+    setSelectedSystemUserId(user.id);
+    setSystemUserDraft({
+      nome: user.nome,
+      email: user.email,
+      perfil: user.perfil,
+    });
+    setIsSystemUserModalOpen(true);
+  };
+
+  const handleSaveSystemUser = () => {
+    const nextDraft = {
+      nome: systemUserDraft.nome.trim(),
+      email: systemUserDraft.email.trim(),
+      perfil: systemUserDraft.perfil.trim(),
+    };
+    if (!nextDraft.nome || !nextDraft.email || !nextDraft.perfil) return;
+
+    if (selectedSystemUserId !== null) {
+      setSystemUsers((prev) =>
+        prev.map((user) =>
+          user.id === selectedSystemUserId
+            ? {
+              ...user,
+              ...nextDraft,
+            }
+            : user,
+        ),
+      );
+    } else {
+      setSystemUsers((prev) => {
+        const nextId = prev.length > 0 ? Math.max(...prev.map((user) => user.id)) + 1 : 1;
+        return [
+          ...prev,
+          {
+            id: nextId,
+            ...nextDraft,
+            status: "Ativo",
+          },
+        ];
+      });
+    }
+
+    handleCloseSystemUserModal();
+  };
+
+  const handlePrimaryActionClick = () => {
+    if (activeTab === "usuarios") {
+      handleOpenNewSystemUser();
+    }
+  };
+
   return (
     <div className={styles.container}>
       <TopHeaderBar title={"Configura\u00e7\u00f5es"} hasNotifications={true} />
@@ -398,12 +588,18 @@ export default function ConfiguracoesEmpresaPage() {
               onClick={() => setActiveTab("usuarios")}
             >
               <Users size={20} />
-              USUÁRIOS DO SISTEMA
+              {"USU\u00c1RIOS DO SISTEMA"}
             </button>
           </div>
 
-          <button type="button" className={styles.primaryActionButton}>
-            {activeTab === "categorias" ? "NOVO CONTRATO" : "CONTRATAR MAIS ACESSOS"}
+          <button type="button" className={styles.primaryActionButton} onClick={handlePrimaryActionClick}>
+            {
+              activeTab === "categorias"
+                ? "NOVA CATEGORIA"
+                : activeTab === "usuarios"
+                  ? "NOVO USU\u00c1RIO"
+                  : "CONTRATAR MAIS ACESSOS"
+            }
           </button>
         </div>
 
@@ -614,11 +810,7 @@ export default function ConfiguracoesEmpresaPage() {
                 <Bookmark size={20} />
                 <h2>Categorias da empresa</h2>
               </div>
-              <button type="button" className={styles.secondaryActionButton}>
-                <Plus size={20} />
-                Nova categoria
-              </button>
-            </div>
+              </div>
 
             <div className={styles.categoryList}>
               {categories.map((categoria) => (
@@ -637,10 +829,6 @@ export default function ConfiguracoesEmpresaPage() {
                 <Users size={20} />
                 <h2>{"Usu\u00e1rios do sistema"}</h2>
               </div>
-              <button type="button" className={styles.secondaryActionButton}>
-                <Plus size={20} />
-                Novo usu\u00e1rio
-              </button>
             </div>
 
             <div className={styles.usersTable}>
@@ -652,7 +840,19 @@ export default function ConfiguracoesEmpresaPage() {
               </div>
 
               {systemUsers.map((usuario) => (
-                <div key={usuario.email} className={styles.usersTableRow}>
+                <div
+                  key={usuario.id}
+                  className={`${styles.usersTableRow} ${styles.usersTableRowClickable}`}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => handleOpenEditSystemUser(usuario)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      handleOpenEditSystemUser(usuario);
+                    }
+                  }}
+                >
                   <span>{usuario.nome}</span>
                   <span>{usuario.email}</span>
                   <span>{usuario.perfil}</span>
@@ -675,6 +875,15 @@ export default function ConfiguracoesEmpresaPage() {
         isOpen={isAddAdditionalCnpjOpen}
         onClose={() => setIsAddAdditionalCnpjOpen(false)}
         onAdd={handleAddAdditionalCnpj}
+      />
+
+      <SystemUserModal
+        isOpen={isSystemUserModalOpen}
+        isEditing={selectedSystemUserId !== null}
+        data={systemUserDraft}
+        onClose={handleCloseSystemUserModal}
+        onSave={handleSaveSystemUser}
+        onChange={handleSystemUserDraftChange}
       />
     </div>
   );
