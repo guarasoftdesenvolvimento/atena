@@ -19,7 +19,6 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 960px;
 }
 
 .tabsGroup {
@@ -83,6 +82,20 @@
 }
 
 .tableCard {
+  --contracts-cols:
+    minmax(180px, 2.1fr)
+    minmax(220px, 2.5fr)
+    minmax(90px, 0.9fr)
+    minmax(150px, 1.5fr)
+    minmax(110px, 1fr)
+    minmax(100px, 1fr)
+    40px;
+  --modelos-cols:
+    minmax(320px, 3fr)
+    minmax(120px, 1fr)
+    minmax(160px, 1.4fr)
+    minmax(160px, 1.4fr)
+    40px;
   background-color: #ffffff;
   border-radius: 16px;
   padding: 16px;
@@ -90,7 +103,6 @@
   flex-direction: column;
   gap: 16px;
   width: 100%;
-  max-width: 960px;
 }
 
 .cardTopRow {
@@ -142,8 +154,8 @@
   padding: 8px 8px;
   border-radius: 4px;
   display: grid;
-  grid-template-columns: 220px 160px 84px 130px 80px 80px 40px;
-  gap: 16px;
+  grid-template-columns: var(--contracts-cols);
+  gap: 12px;
   align-items: center;
   width: 100%;
 }
@@ -153,8 +165,8 @@
   padding: 8px 8px;
   border-radius: 4px;
   display: grid;
-  grid-template-columns: 1fr 100px 120px 120px 60px;
-  gap: 16px;
+  grid-template-columns: var(--modelos-cols);
+  gap: 12px;
   align-items: center;
   width: 100%;
 }
@@ -180,8 +192,8 @@
   border-bottom: 1px solid rgba(193, 193, 193, 0.5);
   padding: 10px 8px;
   display: grid;
-  grid-template-columns: 220px 160px 84px 130px 80px 80px 40px;
-  gap: 16px;
+  grid-template-columns: var(--contracts-cols);
+  gap: 12px;
   align-items: center;
   width: 100%;
   text-decoration: none;
@@ -201,8 +213,8 @@
   border-bottom: 1px solid rgba(193, 193, 193, 0.5);
   padding: 10px 8px;
   display: grid;
-  grid-template-columns: 1fr 100px 120px 120px 60px;
-  gap: 16px;
+  grid-template-columns: var(--modelos-cols);
+  gap: 12px;
   align-items: center;
   width: 100%;
   text-decoration: none;

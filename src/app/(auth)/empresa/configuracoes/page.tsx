@@ -125,6 +125,23 @@ const additionalCompanyPreview = {
   cnaePrincipal: "62.01-5/01",
 };
 
+function useEscapeToClose(isOpen: boolean, onClose: () => void) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+}
+
 function EditResponsibleModal({
   isOpen,
   onClose,
@@ -138,11 +155,19 @@ function EditResponsibleModal({
   data: ResponsibleData;
   onChange: (field: keyof ResponsibleData, value: string) => void;
 }) {
+  useEscapeToClose(isOpen, onClose);
+
   if (!isOpen) return null;
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContent} onClick={(event) => event.stopPropagation()}>
+      <div
+        className={styles.modalContent}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Editar dados do responsável"
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className={styles.editModalHeader}>
           <div className={styles.headerTitleGroup}>
             <UserRound size={24} />
@@ -206,6 +231,8 @@ function AddAdditionalCnpjModal({ isOpen, onClose, onAdd }: AddAdditionalCnpjMod
   const [cnpj, setCnpj] = React.useState("");
   const [isCnpjSearched, setIsCnpjSearched] = React.useState(false);
 
+  useEscapeToClose(isOpen, onClose);
+
   React.useEffect(() => {
     if (!isOpen) {
       setCnpj("");
@@ -222,7 +249,13 @@ function AddAdditionalCnpjModal({ isOpen, onClose, onAdd }: AddAdditionalCnpjMod
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContent} onClick={(event) => event.stopPropagation()}>
+      <div
+        className={styles.modalContent}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Adicionar CNPJ adicional"
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className={styles.editModalHeader}>
           <div className={styles.headerTitleGroup}>
             <Search size={20} />
@@ -341,11 +374,19 @@ function SystemUserModal({
   onSave: () => void;
   onChange: (field: keyof SystemUserDraft, value: string) => void;
 }) {
+  useEscapeToClose(isOpen, onClose);
+
   if (!isOpen) return null;
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContent} onClick={(event) => event.stopPropagation()}>
+      <div
+        className={styles.modalContent}
+        role="dialog"
+        aria-modal="true"
+        aria-label={isEditing ? "Editar usuário do sistema" : "Novo usuário do sistema"}
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className={styles.editModalHeader}>
           <div className={styles.headerTitleGroup}>
             <UserRoundPlus size={24} />

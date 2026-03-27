@@ -3,8 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import TopHeaderBar from "../components/TopHeaderBar";
-import { Search, Plus, Filter, Info, ChevronRight, Bell, Building2, ChevronDown, ListFilter, FolderRoot, X, CheckCircle2, AlertCircle, QrCode, FileSearch } from "lucide-react";
-import backofficeStyles from "../../backoffice/backoffice.module.css";
+import { Search, Plus, Filter, Info, ChevronRight, ListFilter, FolderRoot, X, CheckCircle2, AlertCircle, QrCode, FileSearch } from "lucide-react";
 import styles from "./parceiros.module.css";
 
 type PartnerRisk = "regular" | "em risco" | "irregular";
@@ -106,12 +105,38 @@ interface FinalSuccessModalProps {
   onClose: () => void;
 }
 
+function useEscapeToClose(isOpen: boolean, onClose: () => void) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+}
+
 function FinalSuccessModal({ isOpen, onClose }: FinalSuccessModalProps) {
+  useEscapeToClose(isOpen, onClose);
+
   if (!isOpen) return null;
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modal} style={{ maxWidth: 440 }} onClick={e => e.stopPropagation()}>
+      <div
+        className={styles.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Confirmação de pagamento"
+        style={{ maxWidth: 440 }}
+        onClick={e => e.stopPropagation()}
+      >
         <div className={styles.qrContent} style={{ gap: 36, padding: '48px 40px 16px' }}>
           <div className={styles.illustrationBox}>
             <FileSearch size={100} strokeWidth={1} />
@@ -142,11 +167,20 @@ interface PaymentQrModalProps {
 }
 
 function PaymentQrModal({ isOpen, onClose, onFinish }: PaymentQrModalProps) {
+  useEscapeToClose(isOpen, onClose);
+
   if (!isOpen) return null;
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modal} style={{ maxWidth: 400 }} onClick={e => e.stopPropagation()}>
+      <div
+        className={styles.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Pagamento da consulta"
+        style={{ maxWidth: 400 }}
+        onClick={e => e.stopPropagation()}
+      >
         <div className={styles.qrContent}>
           <h2 className={styles.postSaveTitle}>Escaneie o QR para pagar a consulta</h2>
           <div className={styles.qrContainer}>
@@ -169,11 +203,20 @@ function PaymentQrModal({ isOpen, onClose, onFinish }: PaymentQrModalProps) {
 }
 
 function SuccessUpsellModal({ isOpen, onClose, onConsult }: { isOpen: boolean; onClose: () => void; onConsult: () => void }) {
+  useEscapeToClose(isOpen, onClose);
+
   if (!isOpen) return null;
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modal} style={{ maxWidth: 400 }} onClick={e => e.stopPropagation()}>
+      <div
+        className={styles.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Consulta de histórico processual"
+        style={{ maxWidth: 400 }}
+        onClick={e => e.stopPropagation()}
+      >
         <div className={styles.postSaveContent}>
           <div className={styles.largeIconCircle}>
             <Search size={32} />
@@ -207,6 +250,8 @@ function FilterSheet({ isOpen, onClose }: FilterSheetProps) {
   const [startDate, setStartDate] = React.useState("2025-01-01");
   const [endDate, setEndDate] = React.useState("2025-02-02");
 
+  useEscapeToClose(isOpen, onClose);
+
   const handleClear = () => {
     setStatusFilter("todos");
     setCategoryFilter("todos");
@@ -216,7 +261,13 @@ function FilterSheet({ isOpen, onClose }: FilterSheetProps) {
   };
   return (
     <div className={`${styles.overlay} ${isOpen ? styles.overlayVisible : ''}`} onClick={onClose}>
-      <div className={`${styles.sheet} ${isOpen ? styles.sheetVisible : ''}`} onClick={e => e.stopPropagation()}>
+      <div
+        className={`${styles.sheet} ${isOpen ? styles.sheetVisible : ''}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Filtros de parceiros"
+        onClick={e => e.stopPropagation()}
+      >
         <div className={styles.sheetHeader}>
           <h2 className={styles.sheetTitle}>Filtros:</h2>
         </div>
@@ -320,6 +371,8 @@ function NewPartnerModal({ isOpen, onClose, onFinish }: NewPartnerModalProps) {
   const [step, setStep] = React.useState(1);
   const [isCnpjSearched, setIsCnpjSearched] = React.useState(false);
 
+  useEscapeToClose(isOpen, onClose);
+
   if (!isOpen) return null;
 
   const handleNext = () => {
@@ -336,7 +389,13 @@ function NewPartnerModal({ isOpen, onClose, onFinish }: NewPartnerModalProps) {
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+      <div
+        className={styles.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Cadastro de novo parceiro PJ"
+        onClick={e => e.stopPropagation()}
+      >
         <div className={styles.modalHeader}>
           <div className={styles.modalTitleRow}>
             <FolderRoot size={24} className={styles.modalIconBox} />

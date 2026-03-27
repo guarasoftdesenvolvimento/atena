@@ -1,3 +1,4 @@
+import Image from "next/image";
 import AuthPageShell from "@/components/auth/AuthPageShell";
 import { figmaAssets } from "@/lib/figmaAssets";
 import styles from "./reset-password.module.css";
@@ -27,7 +28,13 @@ export default function ResetPasswordPage({
             }}
           >
             <div style={{ width: 25.7, height: 25.7 }}>
-              <img src={assets.logoIconSrc} alt="" style={{ width: "100%" }} />
+              <Image
+                src={assets.logoIconSrc}
+                alt=""
+                width={26}
+                height={26}
+                style={{ width: "100%", height: "100%" }}
+              />
             </div>
             <div
               style={{
@@ -55,4 +62,3 @@ export default function ResetPasswordPage({
     />
   );
 }
-

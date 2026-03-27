@@ -96,6 +96,23 @@ function getRemessaInvoices(remessa: Remessa, limit = 6): RemessaInvoice[] {
   }));
 }
 
+function useEscapeToClose(isOpen: boolean, onClose: () => void) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+}
+
 function RemessaStatusBadge({ status }: { status: Remessa["status"] }) {
   const entry = getRemessaStatusMeta(status);
 
@@ -113,6 +130,8 @@ function RemessaViewModal({
   remessa: Remessa | null;
   onClose: () => void;
 }) {
+  useEscapeToClose(Boolean(remessa), onClose);
+
   const invoiceRows = React.useMemo(() => (remessa ? getRemessaInvoices(remessa, 6) : []), [remessa]);
 
   if (!remessa) return null;
@@ -121,7 +140,13 @@ function RemessaViewModal({
 
   return (
     <div className={styles.remessaViewOverlay} onClick={onClose}>
-      <div className={styles.remessaViewModal} onClick={(event) => event.stopPropagation()}>
+      <div
+        className={styles.remessaViewModal}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Detalhes da remessa ${remessa.id}`}
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className={styles.remessaViewHeader}>
           <div className={styles.remessaViewTitleWrap}>
             <div className={styles.remessaViewIconWrap}>
@@ -185,6 +210,8 @@ function RemessaPaymentModal({
   remessa: Remessa | null;
   onClose: () => void;
 }) {
+  useEscapeToClose(Boolean(remessa), onClose);
+
   const [copied, setCopied] = React.useState(false);
   const copiedTimeoutRef = React.useRef<number | null>(null);
 
@@ -228,7 +255,13 @@ function RemessaPaymentModal({
 
   return (
     <div className={styles.remessaPaymentOverlay} onClick={onClose}>
-      <div className={styles.remessaPaymentModal} onClick={(event) => event.stopPropagation()}>
+      <div
+        className={styles.remessaPaymentModal}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Pagamento da remessa ${remessa.id}`}
+        onClick={(event) => event.stopPropagation()}
+      >
         <button type="button" className={styles.remessaPaymentCloseButton} onClick={onClose}>
           <X size={16} color="#7c8efd" />
         </button>
@@ -447,6 +480,8 @@ function FilterSheet({
   const [dataDe, setDataDe] = React.useState("2025-01-01");
   const [dataAte, setDataAte] = React.useState("2025-02-02");
 
+  useEscapeToClose(isOpen, onClose);
+
   const statusOptions = React.useMemo<FilterOption[]>(
     () => [
       { value: "todos", label: "Todos" },
@@ -465,7 +500,13 @@ function FilterSheet({
 
   return (
     <div className={`${styles.overlay} ${isOpen ? styles.overlayVisible : ""}`} onClick={onClose}>
-      <div className={`${styles.sheet} ${isOpen ? styles.sheetVisible : ""}`} onClick={(event) => event.stopPropagation()}>
+      <div
+        className={`${styles.sheet} ${isOpen ? styles.sheetVisible : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Filtros de remessas"
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className={styles.sheetHeader}>
           <h2 className={styles.sheetTitle}>Filtros:</h2>
         </div>

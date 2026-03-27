@@ -5,9 +5,6 @@ import styles from "./empresa.module.css";
 import backofficeStyles from "../backoffice/backoffice.module.css";
 import TopHeaderBar from "./components/TopHeaderBar";
 import { 
-  Bell, 
-  Building2, 
-  ChevronDown, 
   PenTool, 
   CheckCircle2, 
   Clock, 
