@@ -5,9 +5,6 @@ import styles from "./empresa.module.css";
 import backofficeStyles from "../backoffice/backoffice.module.css";
 import TopHeaderBar from "./components/TopHeaderBar";
 import { 
-  Bell, 
-  Building2, 
-  ChevronDown, 
   PenTool, 
   CheckCircle2, 
   Clock, 
@@ -18,7 +15,8 @@ import {
   Users as UsersIcon,
   FileText as FileIcon,
   ClipboardList as NotasIcon,
-  Truck as RemessasIcon
+  Truck as RemessasIcon,
+  type LucideIcon,
 } from "lucide-react";
 
 
@@ -32,7 +30,7 @@ function StatCard({
   info = false,
 }: {
   bg: string;
-  icon: any;
+  icon: LucideIcon;
   circleColor: string;
   value: string;
   title: string;

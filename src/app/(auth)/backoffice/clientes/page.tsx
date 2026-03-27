@@ -19,7 +19,22 @@ function statusToPillClass(status: ClientStatus) {
 }
 
 export default function ClientesBackofficePage() {
-  const clients = clientsListMock;
+  const clients = React.useMemo(
+    () => {
+      const duplicateTracker = new Map<string, number>();
+      return clientsListMock.map((client) => {
+        const baseId = `${client.nome}-${client.cnpj}-${client.contato}-${client.licencas}-${client.status}`;
+        const duplicatedCount = (duplicateTracker.get(baseId) ?? 0) + 1;
+        duplicateTracker.set(baseId, duplicatedCount);
+
+        return {
+          ...client,
+          rowId: `${baseId}-${duplicatedCount}`,
+        };
+      });
+    },
+    []
+  );
 
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<"Todos" | ClientStatus>("Todos");
@@ -30,6 +45,8 @@ export default function ClientesBackofficePage() {
   const statusMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (!statusMenuOpen) return;
+
     function handleClickOutside(event: MouseEvent) {
       if (!statusMenuRef.current) return;
       if (!statusMenuRef.current.contains(event.target as Node)) {
@@ -37,11 +54,19 @@ export default function ClientesBackofficePage() {
       }
     }
 
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setStatusMenuOpen(false);
+      }
+    }
+
     document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [statusMenuOpen]);
 
   const q = query.trim().toLowerCase();
   const filtered = clients.filter((c) => {
@@ -157,9 +182,9 @@ export default function ClientesBackofficePage() {
                 <div style={{ gridColumn: "1 / -1", color: "#737791", fontSize: 14 }}>Nenhum cliente encontrado.</div>
               </div>
             ) : (
-              paginated.map((c, idx) => (
+              paginated.map((c) => (
                 <Link
-                  key={`${c.cnpj}-${idx}`}
+                  key={c.rowId}
                   href={`/backoffice/clientes/${encodeURIComponent(c.cnpj)}`}
                   className={styles.row}
                 >

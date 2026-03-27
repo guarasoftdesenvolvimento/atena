@@ -96,6 +96,23 @@ function getRemessaInvoices(remessa: Remessa, limit = 6): RemessaInvoice[] {
   }));
 }
 
+function useEscapeToClose(isOpen: boolean, onClose: () => void) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+}
+
 function RemessaStatusBadge({ status }: { status: Remessa["status"] }) {
   const entry = getRemessaStatusMeta(status);
 
@@ -113,6 +130,8 @@ function RemessaViewModal({
   remessa: Remessa | null;
   onClose: () => void;
 }) {
+  useEscapeToClose(Boolean(remessa), onClose);
+
   const invoiceRows = React.useMemo(() => (remessa ? getRemessaInvoices(remessa, 6) : []), [remessa]);
 
   if (!remessa) return null;
@@ -121,7 +140,13 @@ function RemessaViewModal({
 
   return (
     <div className={styles.remessaViewOverlay} onClick={onClose}>
-      <div className={styles.remessaViewModal} onClick={(event) => event.stopPropagation()}>
+      <div
+        className={styles.remessaViewModal}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Detalhes da remessa ${remessa.id}`}
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className={styles.remessaViewHeader}>
           <div className={styles.remessaViewTitleWrap}>
             <div className={styles.remessaViewIconWrap}>
@@ -185,11 +210,26 @@ function RemessaPaymentModal({
   remessa: Remessa | null;
   onClose: () => void;
 }) {
+  useEscapeToClose(Boolean(remessa), onClose);
+
   const [copied, setCopied] = React.useState(false);
+  const copiedTimeoutRef = React.useRef<number | null>(null);
+
+  React.useEffect(() => {
+    return () => {
+      if (copiedTimeoutRef.current) {
+        window.clearTimeout(copiedTimeoutRef.current);
+      }
+    };
+  }, []);
 
   React.useEffect(() => {
     if (!remessa) {
       setCopied(false);
+      if (copiedTimeoutRef.current) {
+        window.clearTimeout(copiedTimeoutRef.current);
+        copiedTimeoutRef.current = null;
+      }
     }
   }, [remessa]);
 
@@ -201,7 +241,13 @@ function RemessaPaymentModal({
     try {
       await navigator.clipboard.writeText(REMESSA_PIX_KEY);
       setCopied(true);
-      window.setTimeout(() => setCopied(false), 1800);
+      if (copiedTimeoutRef.current) {
+        window.clearTimeout(copiedTimeoutRef.current);
+      }
+      copiedTimeoutRef.current = window.setTimeout(() => {
+        setCopied(false);
+        copiedTimeoutRef.current = null;
+      }, 1800);
     } catch {
       setCopied(false);
     }
@@ -209,7 +255,13 @@ function RemessaPaymentModal({
 
   return (
     <div className={styles.remessaPaymentOverlay} onClick={onClose}>
-      <div className={styles.remessaPaymentModal} onClick={(event) => event.stopPropagation()}>
+      <div
+        className={styles.remessaPaymentModal}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Pagamento da remessa ${remessa.id}`}
+        onClick={(event) => event.stopPropagation()}
+      >
         <button type="button" className={styles.remessaPaymentCloseButton} onClick={onClose}>
           <X size={16} color="#7c8efd" />
         </button>
@@ -312,6 +364,8 @@ function FilterSelect({
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
+    if (!isOpen) return;
+
     function onDocumentMouseDown(event: MouseEvent) {
       if (!wrapperRef.current?.contains(event.target as Node)) {
         setIsOpen(false);
@@ -330,7 +384,7 @@ function FilterSelect({
       document.removeEventListener("mousedown", onDocumentMouseDown);
       document.removeEventListener("keydown", onDocumentKeyDown);
     };
-  }, []);
+  }, [isOpen]);
 
   const selectedLabel = options.find((option) => option.value === value)?.label ?? "Todos";
 
@@ -426,6 +480,8 @@ function FilterSheet({
   const [dataDe, setDataDe] = React.useState("2025-01-01");
   const [dataAte, setDataAte] = React.useState("2025-02-02");
 
+  useEscapeToClose(isOpen, onClose);
+
   const statusOptions = React.useMemo<FilterOption[]>(
     () => [
       { value: "todos", label: "Todos" },
@@ -444,7 +500,13 @@ function FilterSheet({
 
   return (
     <div className={`${styles.overlay} ${isOpen ? styles.overlayVisible : ""}`} onClick={onClose}>
-      <div className={`${styles.sheet} ${isOpen ? styles.sheetVisible : ""}`} onClick={(event) => event.stopPropagation()}>
+      <div
+        className={`${styles.sheet} ${isOpen ? styles.sheetVisible : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Filtros de remessas"
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className={styles.sheetHeader}>
           <h2 className={styles.sheetTitle}>Filtros:</h2>
         </div>
@@ -496,8 +558,12 @@ export default function RemessasPage() {
   const [openPopoverId, setOpenPopoverId] = React.useState<string | null>(null);
   const [selectedRemessa, setSelectedRemessa] = React.useState<Remessa | null>(null);
   const [selectedPaymentRemessa, setSelectedPaymentRemessa] = React.useState<Remessa | null>(null);
+  const hasGlobalOverlayOpen =
+    openPopoverId !== null || selectedRemessa !== null || selectedPaymentRemessa !== null;
 
   React.useEffect(() => {
+    if (!hasGlobalOverlayOpen) return;
+
     function onDocumentMouseDown(event: MouseEvent) {
       const target = event.target;
 
@@ -526,11 +592,11 @@ export default function RemessasPage() {
       document.removeEventListener("mousedown", onDocumentMouseDown);
       document.removeEventListener("keydown", onDocumentKeyDown);
     };
-  }, []);
+  }, [hasGlobalOverlayOpen]);
 
   return (
     <div className={styles.container}>
-      <TopHeaderBar title="Remessas" hasNotifications={true} />
+      <TopHeaderBar title="Remessas" hasNotifications={false} />
 
       <div className={styles.contentWrapper}>
         <div className={styles.mainCard}>
@@ -558,10 +624,8 @@ export default function RemessasPage() {
 
             <div className={styles.tableBody}>
               {remessas.map((remessa, index) => {
-                const rowId = `${remessa.id}-${index}`;
-
                 return (
-                  <div key={rowId} className={`${styles.tableRow} ${index === remessas.length - 1 ? styles.tableRowLast : ""}`}>
+                  <div key={remessa.id} className={`${styles.tableRow} ${index === remessas.length - 1 ? styles.tableRowLast : ""}`}>
                     <div className={styles.idCell}>{remessa.id}</div>
                     <div className={styles.textCell}>{remessa.dataEmissao}</div>
                     <div className={styles.textCell}>{remessa.dataVencimento}</div>
@@ -575,13 +639,13 @@ export default function RemessasPage() {
                         <button
                           type="button"
                           aria-label="Ações da remessa"
-                          className={`${styles.moreButton} ${openPopoverId === rowId ? styles.moreButtonActive : ""}`}
-                          onClick={() => setOpenPopoverId((current) => (current === rowId ? null : rowId))}
+                          className={`${styles.moreButton} ${openPopoverId === remessa.id ? styles.moreButtonActive : ""}`}
+                          onClick={() => setOpenPopoverId((current) => (current === remessa.id ? null : remessa.id))}
                         >
                           <MoreVertical size={16} />
                         </button>
 
-                        {openPopoverId === rowId && (
+                        {openPopoverId === remessa.id && (
                           <div className={styles.popover}>
                             <button
                               type="button"

@@ -1,0 +1,16 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="M32 4L52 11.2V27.2C52 40.64 43.56 52.48 32 57.12C20.44 52.48 12 40.64 12 27.2V11.2L32 4Z"
+    fill="url(#atena-shield)"
+  />
+  <path
+    d="M24.56 31.32L20.8 27.56C20.32 27.08 19.56 27.08 19.08 27.56L17.6 29.04C17.12 29.52 17.12 30.28 17.6 30.76L23.68 36.84C24.16 37.32 24.92 37.32 25.4 36.84L38.48 23.76C38.96 23.28 38.96 22.52 38.48 22.04L37 20.56C36.52 20.08 35.76 20.08 35.28 20.56L24.56 31.32Z"
+    fill="white"
+  />
+  <defs>
+    <linearGradient id="atena-shield" x1="12" y1="4" x2="52" y2="57.12" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6A69FF" />
+      <stop offset="1" stop-color="#4A49E6" />
+    </linearGradient>
+  </defs>
+</svg>

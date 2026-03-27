@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   BarChart2,
   LogOut,
@@ -23,7 +24,7 @@ function Logo() {
   return (
     <div className={styles.logoWrap} aria-label="Atena">
       <div className={styles.logoIcon}>
-        <img src={permaLogoIcon} alt="" />
+        <Image src={permaLogoIcon} alt="" width={26} height={26} style={{ width: "100%", height: "100%" }} />
       </div>
       <div className={styles.logoWordmark}>Atena</div>
     </div>

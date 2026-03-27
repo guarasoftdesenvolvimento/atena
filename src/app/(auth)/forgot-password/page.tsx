@@ -2,6 +2,7 @@
 
 import React, { FormEvent, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import AuthPageShell from "@/components/auth/AuthPageShell";
 import TextField from "@/components/auth/TextField";
 import PrimaryButton from "@/components/auth/PrimaryButton";
@@ -37,10 +38,12 @@ export default function ForgotPasswordPage() {
         <div className={styles.brand}>
           <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
             <div style={{ width: 25.7, height: 25.7 }}>
-              <img
+              <Image
                 src={assets.logoIconSrc}
                 alt=""
-                style={{ width: "100%" }}
+                width={26}
+                height={26}
+                style={{ width: "100%", height: "100%" }}
               />
             </div>
             <div
@@ -113,4 +116,3 @@ export default function ForgotPasswordPage() {
     />
   );
 }
-

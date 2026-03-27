@@ -210,7 +210,7 @@ export default function ClienteDetailsPage({
               {additionalCnpjs.map((item, idx) => {
                 const expanded = idx === expandedAdditionalIndex;
                 return (
-                  <div key={item.cnpj + idx} className={styles.accordionItem}>
+                  <div key={`${item.cnpj}-${item.nome}-${item.email}`} className={styles.accordionItem}>
                     <div className={styles.accordionHeader}>
                       <div className={styles.additionalName}>{item.nome}</div>
 

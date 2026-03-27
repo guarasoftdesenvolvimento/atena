@@ -25,21 +25,20 @@ export default function TopHeaderBar({
   hasNotifications = false,
   companyOptions,
 }: TopHeaderBarProps) {
-  const shouldShowNotifications = false;
+  const shouldShowNotifications = hasNotifications;
   const options = companyOptions && companyOptions.length > 0 ? companyOptions : defaultCompanyOptions;
   const hasAdditionalCnpj = options.length > 1;
 
-  const [selectedCompany, setSelectedCompany] = React.useState<CompanyOption>(options[0]);
+  const [selectedCompanyCnpj, setSelectedCompanyCnpj] = React.useState<string>(options[0]?.cnpj ?? "");
   const [isCompanyMenuOpen, setIsCompanyMenuOpen] = React.useState(false);
   const companyMenuRef = React.useRef<HTMLDivElement | null>(null);
+  const selectedCompany =
+    options.find((item) => item.cnpj === selectedCompanyCnpj) ??
+    options[0];
 
   React.useEffect(() => {
-    if (!options.some((item) => item.cnpj === selectedCompany.cnpj)) {
-      setSelectedCompany(options[0]);
-    }
-  }, [options, selectedCompany.cnpj]);
+    if (!isCompanyMenuOpen || !hasAdditionalCnpj) return;
 
-  React.useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (!companyMenuRef.current) return;
       if (!companyMenuRef.current.contains(event.target as Node)) {
@@ -51,7 +50,7 @@ export default function TopHeaderBar({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [hasAdditionalCnpj, isCompanyMenuOpen]);
 
   return (
     <div className={backofficeStyles.topHeader}>
@@ -113,7 +112,7 @@ export default function TopHeaderBar({
               <span style={{ fontWeight: 600, fontSize: "16px", color: "#527ca5", lineHeight: 1.2 }}>
                 {selectedCompany.name}
               </span>
-              <span style={{ fontSize: "11px", color: "#527ca5" }}>{selectedCompany.cnpj}</span>
+                <span style={{ fontSize: "11px", color: "#527ca5" }}>{selectedCompany.cnpj}</span>
             </div>
             {hasAdditionalCnpj ? (
               <ChevronDown
@@ -153,7 +152,7 @@ export default function TopHeaderBar({
                     role="option"
                     aria-selected={isSelected}
                     onClick={() => {
-                      setSelectedCompany(option);
+                      setSelectedCompanyCnpj(option.cnpj);
                       setIsCompanyMenuOpen(false);
                     }}
                     style={{

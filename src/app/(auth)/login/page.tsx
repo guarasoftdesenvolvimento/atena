@@ -2,6 +2,7 @@
 
 import React, { FormEvent, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
 import AuthPageShell from "@/components/auth/AuthPageShell";
 import TextField from "@/components/auth/TextField";
@@ -50,28 +51,34 @@ export default function LoginPage() {
       mobileStatusBar={
         <div className={styles.statusBar}>
           <div className={styles.battery}>
-            <img src={assets.mobileStatus.batterySrc} alt="" />
+            <Image src={assets.mobileStatus.batterySrc} alt="" width={27} height={12} style={{ width: "100%", height: "100%" }} />
           </div>
 
           <div className={styles.time}>
-            <img src={assets.mobileStatus.timeSrc} alt="" />
+            <Image src={assets.mobileStatus.timeSrc} alt="" width={32} height={9} style={{ width: "100%", height: "100%" }} />
           </div>
 
           <div className={styles.service}>
-            <img
+            <Image
               src={assets.mobileStatus.backArrowSrc}
               alt=""
+              width={7}
+              height={7}
               style={{ width: 7, height: 7 }}
             />
             <div className={styles.serviceText}>Service</div>
-            <img
+            <Image
               src={assets.mobileStatus.receptionSrc}
               alt=""
+              width={10}
+              height={10}
               style={{ width: 10, height: 10 }}
             />
-            <img
+            <Image
               src={assets.mobileStatus.wifiSrc}
               alt=""
+              width={12}
+              height={12}
               style={{ width: 12, height: 12 }}
             />
           </div>
@@ -81,7 +88,7 @@ export default function LoginPage() {
         <div className={styles.brand}>
           <div className={styles.brandLogoRow}>
             <div className={styles.brandIcon}>
-              <img src={assets.logoIconSrc} alt="" />
+              <Image src={assets.logoIconSrc} alt="" width={26} height={26} style={{ width: "100%", height: "100%" }} />
             </div>
             <div className={styles.brandWordmark}>Atena</div>
           </div>
